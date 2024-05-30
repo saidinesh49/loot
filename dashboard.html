@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard-Apploot</title>
+    <link rel="icon" href="loot_logo.png" type="image/png">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            height: 100vh;
+            background-color: white;
+            color: blue;
+        }
+
+        .sidebar {
+            background-color: blue;
+            width: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0;
+            box-sizing: border-box;
+            position: fixed;
+            left: -200px; /* Hidden by default */
+            top: 0;
+            height: 100%;
+            transition: left 0.3s ease;
+            z-index: 10; /* Ensure it is above the content */
+        }
+
+        .sidebar.show {
+            left: 0;
+        }
+
+        .sidebar button {
+            width: 80%;
+            background-color: white;
+            border: 2px solid blue;
+            color: blue;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            margin: 10px 0;
+            text-align: center;
+        }
+
+        .sidebar button:hover {
+            background-color: blue;
+            color: white;
+        }
+
+        .content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+            width: 100%; /* Ensure content takes full width */
+        }
+
+        h1 {
+            font-size: 36px;
+        }
+
+        .menu-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: blue;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            z-index: 20; /* Ensure it is above the sidebar */
+        }
+
+        .menu-button:hover {
+            background-color: darkblue;
+            transform: scale(1.1);
+        }
+
+        .back-button {
+            background-color: white;
+            color: blue;
+            border: 2px solid blue;
+            padding: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: auto;
+        }
+
+        .back-button:hover {
+            background-color: blue;
+            color: white;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar" id="sidebar">
+        <button onclick="window.location.href='acc.html'">Account</button>
+        <button onclick="window.location.href='shop.html'">My Shop</button>
+        <button onclick="window.location.href='loot.html'">Loot</button>
+        <button onclick="window.location.href='explore.html'">Explore</button>
+        <button onclick="window.location.href='rewards.html'"">Rewards</button>
+        <button class="back-button" onclick="toggleSidebar()">←</button>
+    </div>
+    <div class="content">
+        <button class="menu-button" id="menuButton" onclick="toggleSidebar()">☰</button>
+        <h1>Go Explore check Today’s Exciting Loot Deals..</h1>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            var sidebar = document.getElementById('sidebar');
+            var menuButton = document.getElementById('menuButton');
+            sidebar.classList.toggle('show');
+            menuButton.classList.toggle('hidden');
+        }
+    </script>
+</body>
+</html>

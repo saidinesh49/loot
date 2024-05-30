@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reels Interface</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f0f0;
+            overflow: hidden;
+        }
+        .container {
+            width: 360px;
+            height: 640px;
+            border: 2px solid blue;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: black; /* Ensures the container background is black */
+        }
+        .video-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        video {
+            width: 100%;
+            height: auto;
+            max-height: 100%;
+        }
+        .controls {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            position: absolute;
+            bottom: 0;
+            z-index: 10; /* Ensures the controls are on top of the video */
+        }
+        .controls button {
+            border: 2px solid blue;
+            border-radius: 10px;
+            padding: 10px 20px;
+            background-color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .sidebar {
+            background-color: blue;
+            width: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0;
+            box-sizing: border-box;
+            position: fixed;
+            left: -200px; /* Hidden by default */
+            top: 0;
+            height: 100%;
+            transition: left 0.3s ease;
+            z-index: 20; /* Ensures the sidebar is on top of the container */
+        }
+        .sidebar.show {
+            left: 0;
+        }
+        .sidebar button {
+            width: 80%;
+            background-color: white;
+            border: 2px solid blue;
+            color: blue;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            margin: 10px 0;
+            text-align: center;
+        }
+        .sidebar button.active {
+            background-color: rgb(138, 135, 135);
+            color: black;
+        }
+        .sidebar button:hover {
+            background-color: blue;
+            color: white;
+        }
+        .menu-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: blue;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            z-index: 30; /* Ensures the menu button is on top */
+        }
+        .menu-button.hidden {
+            display: none;
+        }
+        .menu-button:hover {
+            background-color: darkblue;
+            transform: scale(1.1);
+        }
+        .back-button {
+            background-color: white;
+            color: blue;
+            border: 2px solid blue;
+            padding: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: auto;
+        }
+        .back-button:hover {
+            background-color: blue;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar" id="sidebar">
+        <button onclick="window.location.href='acc.html'">Account</button>
+        <button onclick="window.location.href='shop.html'">My Shop</button>
+        <button onclick="window.location.href='loot.html'">Loot</button>
+        <button class="active">Explore</button>
+        <button onclick="window.location.href='rewards.html'"">Rewards</button>
+        <button class="back-button" onclick="toggleSidebar()">←</button>
+    </div>
+    <div class="container">
+        <button class="menu-button" id="menu-button" onclick="toggleSidebar()">☰</button>
+        <div id="video1" class="video-container" onclick="togglePlayPause('vid1')">
+            <video id="vid1" src="a.mp4" autoplay></video>
+            <div class="controls">
+                <button onclick="buy()">Buy</button>
+                <button onclick="like()">Like</button>
+            </div>
+        </div>
+        <div id="video2" class="video-container" style="display: none;" onclick="togglePlayPause('vid2')">
+            <video id="vid2" src="b.mp4" autoplay></video>
+            <div class="controls">
+                <button onclick="buy()">Buy</button>
+                <button onclick="like()">Like</button>
+            </div>
+        </div>
+        <div id="video3" class="video-container" style="display: none;" onclick="togglePlayPause('vid3')">
+            <video id="vid3" src="c.mp4" autoplay></video>
+            <div class="controls">
+                <button onclick="buy()">Buy</button>
+                <button onclick="like()">Like</button>
+            </div>
+        </div>
+        <div id="video4" class="video-container" style="display: none;" onclick="togglePlayPause('vid4')">
+            <video id="vid4" src="d.mp4" autoplay></video>
+            <div class="controls">
+                <button onclick="buy()">Buy</button>
+                <button onclick="like()">Like</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        let currentVideo = 1;
+
+        document.body.addEventListener('touchstart', handleTouchStart, false);
+        document.body.addEventListener('touchmove', handleTouchMove, false);
+
+        let xDown = null;
+        let yDown = null;
+
+        function getTouches(evt) {
+            return evt.touches || evt.originalEvent.touches;
+        }
+
+        function handleTouchStart(evt) {
+            const firstTouch = getTouches(evt)[0];
+            xDown = firstTouch.clientX;
+            yDown = firstTouch.clientY;
+        }
+
+        function handleTouchMove(evt) {
+            if (!xDown || !yDown) {
+                return;
+            }
+
+            const xUp = evt.touches[0].clientX;
+            const yUp = evt.touches[0].clientY;
+
+            const xDiff = xDown - xUp;
+            const yDiff = yDown - yUp;
+
+            if (Math.abs(xDiff) > Math.abs(yDiff)) {
+                return; // Ignore horizontal swipes
+            }
+
+            if (yDiff > 0) {
+                // Swipe up
+                showNextVideo();
+            } else {
+                // Swipe down
+                showPreviousVideo();
+            }
+
+            xDown = null;
+            yDown = null;
+        }
+
+        function showNextVideo() {
+            document.getElementById(`video${currentVideo}`).style.display = 'none';
+            document.getElementById(`vid${currentVideo}`).pause();
+            currentVideo = currentVideo < 4 ? currentVideo + 1 : 1;
+            document.getElementById(`video${currentVideo}`).style.display = 'flex';
+            document.getElementById(`vid${currentVideo}`).play();
+        }
+
+        function showPreviousVideo() {
+            document.getElementById(`video${currentVideo}`).style.display = 'none';
+            document.getElementById(`vid${currentVideo}`).pause();
+            currentVideo = currentVideo > 1 ? currentVideo - 1 : 4;
+            document.getElementById(`video${currentVideo}`).style.display = 'flex';
+            document.getElementById(`vid${currentVideo}`).play();
+        }
+
+        function togglePlayPause(videoId) {
+            const video = document.getElementById(videoId);
+            if (video.paused) {
+                video.play();
+            } else {
+                video.pause();
+            }
+        }
+
+        function buy() {
+            alert('Buy button clicked');
+        }
+
+        function like() {
+            alert('Like button clicked');
+        }
+
+        function toggleSidebar() {
+            var sidebar = document.getElementById('sidebar');
+            var menuButton = document.getElementById('menu-button');
+            sidebar.classList.toggle('show');
+            menuButton.classList.toggle('hidden');
+        }
+    </script>
+</body>
+</html>

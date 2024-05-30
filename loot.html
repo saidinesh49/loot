@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lootpage</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: #0000ff;
+            background-color: #fff;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .sidebar {
+            background-color: blue;
+            width: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0;
+            box-sizing: border-box;
+            position: fixed;
+            left: -200px; /* Hidden by default */
+            top: 0;
+            height: 100%;
+            transition: left 0.3s ease;
+            z-index: 20; /* Ensures the sidebar is on top */
+        }
+
+        .sidebar.show {
+            left: 0;
+        }
+
+        .sidebar button {
+            width: 80%;
+            background-color: white;
+            border: 2px solid blue;
+            color: blue;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            margin: 10px 0;
+            text-align: center;
+        }
+
+        .sidebar button.active {
+            background-color: rgb(138, 135, 135);
+            color: black;
+        }
+
+        .sidebar button:hover {
+            background-color: blue;
+            color: white;
+        }
+
+        .user-section {
+            margin-top: auto;
+            padding: 15px;
+            background-color: #0000ff;
+            width: 100%;
+            text-align: center;
+            font-size: 16px;
+            color: #fff;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+            margin-left: 200px; /* Adjusted for the sidebar */
+            transition: margin-left 0.3s ease;
+        }
+
+        .main-content.shifted {
+            margin-left: 0;
+        }
+
+        .search-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            width: 60%;
+            padding: 10px;
+            border: 2px solid #0000ff;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .search-icon, .profile-icon {
+            width: 40px;
+            height: 40px;
+            background-color: white;
+            border: 2px solid rgb(0, 0, 0);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+            box-sizing: border-box;
+            transition: transform 0.3s ease;
+        }
+
+        .search-icon:hover, .profile-icon:hover {
+            background-color: #0000ff;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .profile-icon {
+            border-radius: 50%;
+        }
+
+        h1 {
+            font-size: 24px; /* Adjusted for smaller screens */
+            color: #0000ff;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .section {
+            width: 100%; /* Full width on mobile */
+            margin-bottom: 20px;
+            padding: 20px;
+            border: 2px solid #0000ff;
+            border-radius: 20px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: 20px; /* Adjusted for smaller screens */
+            margin-bottom: 20px;
+            color: #0000ff;
+        }
+
+        .button-grid, .button-grid-wide {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .button-grid button, .button-grid-wide button {
+            width: 80px; /* Adjusted for smaller screens */
+            height: 80px; /* Adjusted for smaller screens */
+            padding: 10px;
+            border: 2px solid #0000ff;
+            border-radius: 20px;
+            background-color: white;
+            color: black;
+            font-size: 14px; /* Adjusted for smaller screens */
+            cursor: pointer;
+            box-sizing: border-box;
+            transition: transform 0.3s ease;
+        }
+
+        .button-grid button:hover, .button-grid-wide button:hover {
+            background-color: #0000ff;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .special-button {
+            width: 100px; /* Adjusted for smaller screens */
+            height: 100px; /* Adjusted for smaller screens */
+            padding: 10px;
+            border: 2px solid #0000ff;
+            border-radius: 30px;
+            background-color: white;
+            color: black;
+            font-size: 14px; /* Adjusted for smaller screens */
+            cursor: pointer;
+            box-sizing: border-box;
+            transition: transform 0.3s ease;
+        }
+
+        .special-button:hover {
+            background-color: #0000ff;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .menu-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: blue;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            z-index: 30; /* Ensures the menu button is on top */
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .menu-button:hover {
+            background-color: darkblue;
+            transform: scale(1.1);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .back-button {
+            background-color: white;
+            color: blue;
+            border: 2px solid blue;
+            padding: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: auto;
+        }
+
+        .back-button:hover {
+            background-color: blue;
+            color: white;
+        }
+
+        @media (max-width: 600px) {
+            .main-content {
+                margin-left: 0; /* No margin on mobile */
+            }
+
+            .search-input {
+                width: 70%; /* Adjusted for smaller screens */
+            }
+
+            .section {
+                width: 90%; /* Adjusted for smaller screens */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar" id="sidebar">
+        <button onclick="window.location.href='acc.html'">Account</button>
+        <button onclick="window.location.href='shop.html'">My Shop</button>
+        <button class="active">Loot</button>
+        <button onclick="window.location.href='explore.html'">Explore</button>
+        <button onclick="window.location.href='rewards.html'"">Rewards</button>
+        <button class="back-button" onclick="toggleSidebar()">←</button>
+    </div>
+    <div class="main-content" id="main-content">
+        <button class="menu-button" id="menu-button" onclick="toggleSidebar()">☰</button>
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Search...">
+            <div class="search-icon">🔍</div>
+            <div class="profile-icon">👤</div>
+        </div>
+        <h1>Get Best rewards...</h1>
+        <div class="section">
+            <div class="section-title">Offer Zone</div>
+            <div class="button-grid">
+                <button>Off 1</button>
+                <button>Off 2</button>
+                <button>Off 3</button>
+                <button>Off 4</button>
+                <button class="special-button">See More</button>
+            </div>
+        </div>
+        <div class="section">
+            <div class="button-grid-wide">
+                <button class="special-button">Media</button>
+                <button class="special-button">Study</button>
+                <button class="special-button">AI & Tech</button>
+                <button class="special-button">Products</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        function toggleSidebar() {
+            var sidebar = document.getElementById('sidebar');
+            var mainContent = document.getElementById('main-content');
+            var menuButton = document.getElementById('menu-button');
+            sidebar.classList.toggle('show');
+            mainContent.classList.toggle('shifted');
+            if (sidebar.classList.contains('show')) {
+                menuButton.classList.add('hidden');
+            } else {
+                menuButton.classList.remove('hidden');
+            }
+        }
+    </script>
+</

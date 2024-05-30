@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apploot</title>
+    <link rel="icon" href="loot_logo.png" type="image/png">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #fff;
+            color: #0000ff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .header {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .header img {
+            width: 100px;
+            height: 100px;
+            margin-right: 10px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin: 0;
+        }
+
+        .buttons-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .buttons-container button {
+            background-color: white;
+            border: 2px solid blue;
+            color: blue;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .buttons-container button:hover {
+            background-color: blue;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .content {
+            text-align: center;
+            font-size: 48px;
+            color: #0000ff;
+        }
+
+        .content span {
+            display: block;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="loot_logo.png" alt="Loot Logo">
+        
+    </div>
+    <div class="buttons-container">
+        <button onclick="window.location.href='dashboard.html'">Register</button>
+        <button onclick="window.location.href='dashboard.html'">Login</button>
+    </div>
+    <div class="content">
+        <span>Get rewards...</span>
+        <span>&</span>
+        <span>Grow with us...</span>
+    </div>
+</body>
+</html>

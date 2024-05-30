@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sellerpage-Apploot</title>
+    <link rel="icon" href="loot_logo.png" type="image/png">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: #0000ff;
+            background-color: #fff;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            background-color: blue;
+            width: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0;
+            box-sizing: border-box;
+            position: fixed;
+            left: -200px; /* Hidden by default */
+            top: 0;
+            height: 100%;
+            transition: left 0.3s ease;
+            z-index: 20; /* Ensures the sidebar is on top */
+        }
+
+        .sidebar.show {
+            left: 0;
+        }
+
+        .sidebar button {
+            width: 80%;
+            background-color: white;
+            border: 2px solid blue;
+            color: blue;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            margin: 10px 0;
+            text-align: center;
+        }
+
+        .sidebar button.active {
+            background-color: rgb(138, 135, 135);
+            color: black;
+        }
+
+        .sidebar button:hover {
+            background-color: blue;
+            color: white;
+        }
+
+        .sidebar-buttn.active {
+            background-color: #ccc;
+            color: #0000ff;
+        }
+
+        .user-section {
+            margin-top: auto;
+            padding: 15px;
+            background-color: #0000ff;
+            width: 100%;
+            text-align: center;
+            font-size: 16px;
+            color: #fff;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 20px;
+            margin-left: 200px; /* Adjusted for the sidebar */
+            transition: margin-left 0.3s ease;
+        }
+
+        .main-content.shifted {
+            margin-left: 0;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .section {
+            width: 80%;
+            margin-bottom: 20px;
+            padding: 20px;
+            border: 2px solid #0000ff;
+            border-radius: 10px;
+            box-sizing: border-box;
+        }
+
+        .section-title {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .input-field, .upload-btn, .add-more-btn {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: 2px solid #0000ff;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        .input-field {
+            color: #888;
+        }
+
+        .upload-btn, .add-more-btn {
+            background-color: #0000ff;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .upload-btn:hover, .add-more-btn:hover {
+            background-color: #3333ff;
+        }
+
+        .menu-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: blue;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            z-index: 30; /* Ensures the menu button is on top */
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .menu-button:hover {
+            background-color: darkblue;
+            transform: scale(1.1);
+        }
+
+        .menu-button.hidden {
+            display: none;
+        }
+
+        .back-button {
+            background-color: white;
+            color: blue;
+            border: 2px solid blue;
+            padding: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: auto;
+        }
+
+        .back-button:hover {
+            background-color: blue;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar" id="sidebar">
+            <button onclick="window.location.href='acc.html'">Account</button>
+            <button class="active">My Shop</button>
+            <button onclick="window.location.href='loot.html'">Loot</button>
+            <button onclick="window.location.href='explore.html'">Explore</button>
+            <button onclick="window.location.href='rewards.html'"">Rewards</button>
+            <button class="back-button" onclick="toggleSidebar()">←</button>
+        </div>
+        <div class="main-content" id="content">
+            <button class="menu-button" id="menuButton" onclick="toggleSidebar()">☰</button>
+            <h1>Shop</h1>
+            <div class="section">
+                <div class="section-title">About</div>
+                <input class="input-field" type="text" placeholder="About your product">
+            </div>
+            <div class="section">
+                <div class="section-title">Upload Media</div>
+                <button class="upload-btn">Upload from Computer</button>
+            </div>
+            <div class="section">
+                <div class="section-title">Connect</div>
+                <input class="input-field" type="text" placeholder="Upload your website link or portfolio link in ONDC">
+            </div>
+            <button class="add-more-btn">ADD More</button>
+        </div>
+    </div>
+    <script>
+        function toggleSidebar() {
+            var sidebar = document.getElementById('sidebar');
+            var content = document.getElementById('content');
+            var menuButton = document.getElementById('menuButton');
+            sidebar.classList.toggle('show');
+            content.classList.toggle('shifted');
+            menuButton.classList.toggle('hidden');
+        }
+    </script>
+</body>
+</html>
