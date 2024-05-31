@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="script.js"></script>
+    <title>Loot</title>
+</head>
+<body>
+    <div class="Ritendra">
+        <div class="login">
+            <a>Sign_In</a>
+            <input type="text" id="Susername" placeholder="Enter Username" required>
+            <input type="password" id="Spassword" placeholder="Enter password" required>
+            <button id="logged" type="submit">Login</button>
+            <a onclick="addsignup()" href="#">Register yourself</a>
+        </div>
+        <form id="signupForm" class="signup" style="display: none;">
+            <a>Sign_Up</a>
+            <input type="text" id="EName" placeholder="Enter Your Name" required>
+            <input type="number" id="EAge" placeholder="Enter your Age" required>
+            <input type="tel" id="EPhone" placeholder="(+Country Code) 999-999-9999" pattern="^\(\+\d{1,3}\) \d{3}-\d{3}-\d{4}$" required>
+            <input type="text" id="Eusername" placeholder="Enter Username" required>
+            <input type="email" id="Email" placeholder="Email Id" required>
+            <input type="password" id="Npassword" placeholder="New password" required>
+            <input type="password" id="Cpassword" placeholder="Confirm password" required>
+            <input id="signed" type="submit" value="Sign Up">
+            <a onclick="addsignin()" href="#">Want to SignIn?</a>
+        </form>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyClf6W3B2nesvjfZtRSMcjbt6NRp6uy-Po",
+            authDomain: "lootbase-4d01f.firebaseapp.com",
+            projectId: "lootbase-4d01f",
+            storageBucket: "lootbase-4d01f.appspot.com",
+            messagingSenderId: "350264696657",
+            appId: "1:350264696657:web:9af597da2f5fd2970d7d70",
+            measurementId: "G-YQK38EMPJK"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        import { getDatabase, ref, child, get, set, update, remove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+        const db = getDatabase();
+
+        let Susername = document.getElementById('Susername');
+        let Spassword = document.getElementById('Spassword');
+        let logged = document.getElementById('logged');
+        let signed = document.getElementById('signed');
+
+        function verify() {
+            get(child(ref(db), 'LootUsers/' + Susername.value)).then((snapshot) => {
+                let present = Boolean(snapshot.exists());
+                if (present) {
+                    if (Spassword.value == snapshot.val().password) {
+                        alert("Successful login!!");
+                        window.location.replace("/dashboard.html");
+                    } else {
+                        alert("Wrong Entry!!");
+                    }
+                } else {
+                    alert("Invalid");
+                }
+            }).catch((error) => {
+                console.log(error);
+            });
+        }
+
+        let formvalid = false;
+
+        function validateForm() {
+            var form = document.getElementById("signupForm");
+            if (form.checkValidity() === false) {
+                // This will display the browser's built-in validation messages
+                return false;
+            }
+            formvalid = true;
+            return true;
+        }
+
+        let EName = document.getElementById('EName');
+        let EAge = document.getElementById('EAge');
+        let EPhone = document.getElementById('EPhone');
+        let username = document.getElementById('Eusername');
+        let userpassword = document.getElementById('Npassword');
+        let Cpassword = document.getElementById('Cpassword');
+        let Email = document.getElementById('Email');
+
+        function New() {
+            console.log("Entered New function");
+            validateForm();
+            if (formvalid == true) {
+                if (userpassword.value == Cpassword.value) {
+                    set(ref(db, 'LootUsers/' + username.value), {
+                        Name: EName.value,
+                        Age: EAge.value,
+                        Phone: EPhone.value,
+                        username: username.value,
+                        Email: Email.value,
+                        password: userpassword.value,
+                    })
+                    .then(() => {
+                        alert("SignUp Successfully! You can Login Now");
+                        window.location.reload();
+                    })
+                    .catch((error) => {
+                        alert("Unsuccessful attempt!!");
+                    });
+                } else {
+                    alert("New Password and Confirm Password should be the same");
+                }
+            } else {
+                alert("Please Fill Properly");
+            }
+        }
+
+        logged.addEventListener('click', verify);
+        signed.addEventListener('click', New);
+
+  </script>
+</html>
