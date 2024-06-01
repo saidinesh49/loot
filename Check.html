@@ -73,12 +73,13 @@
 
         function validateForm() {
             var form = document.getElementById("signupForm");
+            console.log("validation function invoked");
             if (form.checkValidity() === false) {
                 // This will display the browser's built-in validation messages
-                return false;
+                formvalid= false;
+                console.log("Here form became invalid");
             }
-            formvalid = true;
-            return true;
+            else {formvalid = true; console.log("Form Became valid");}
         }
 
         let EName = document.getElementById('EName');
@@ -93,6 +94,7 @@
             console.log("Entered New function");
             validateForm();
             if (formvalid == true) {
+                console.log("entered to check password");
                 if (userpassword.value == Cpassword.value) {
                     set(ref(db, 'LootUsers/' + username.value), {
                         Name: EName.value,
