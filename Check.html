@@ -30,7 +30,8 @@
             margin-bottom: 20px;
             color: #333;
         }
-        .container input {
+        .container input,
+        .container select {
             width: calc(100% - 24px);
             padding: 10px;
             margin: 10px 0;
@@ -95,6 +96,12 @@
             <a>Sign Up</a>
             <input type="text" id="EName" placeholder="Enter Your Name" required>
             <input type="number" id="EAge" placeholder="Enter your Age" required>
+            <select id="EGender" required>
+                <option value="" disabled selected>Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+            </select>
             <input type="tel" id="EPhone" placeholder="(+Country Code) 999-999-9999" pattern="^\(\+\d{1,3}\) \d{3}-\d{3}-\d{4}$" required>
             <input type="text" id="Eusername" placeholder="Enter Username" required>
             <input type="email" id="Email" placeholder="Email Id" required>
@@ -107,6 +114,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getDatabase, ref, child, get, set } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyClf6W3B2nesvjfZtRSMcjbt6NRp6uy-Po",
@@ -119,7 +127,6 @@
         };
 
         const app = initializeApp(firebaseConfig);
-        import { getDatabase, ref, child, get, set, update, remove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
         const db = getDatabase();
 
         let Susername = document.getElementById('Susername');
@@ -131,7 +138,7 @@
             get(child(ref(db), 'LootUsers/' + Susername.value)).then((snapshot) => {
                 let present = Boolean(snapshot.exists());
                 if (present) {
-                    if (Spassword.value == snapshot.val().password) {
+                    if (Spassword.value === snapshot.val().password) {
                         alert("Successful login!!");
                         window.location.replace("./dashboard.html");
                     } else {
@@ -162,22 +169,24 @@
         let EName = document.getElementById('EName');
         let EAge = document.getElementById('EAge');
         let EPhone = document.getElementById('EPhone');
-        let username = document.getElementById('Eusername');
+        let Eusername = document.getElementById('Eusername');
         let userpassword = document.getElementById('Npassword');
         let Cpassword = document.getElementById('Cpassword');
         let Email = document.getElementById('Email');
+        let EGender = document.getElementById('EGender');
 
         function New() {
             console.log("Entered New function");
             validateForm();
-            if (formvalid == true) {
+            if (formvalid && EAge.value >= 0 && EGender.value) {
                 console.log("Checking password");
-                if (userpassword.value == Cpassword.value) {
-                    set(ref(db, 'LootUsers/' + username.value), {
+                if (userpassword.value === Cpassword.value) {
+                    set(ref(db, 'LootUsers/' + Eusername.value), {
                         Name: EName.value,
                         Age: EAge.value,
+                        Gender: EGender.value,
                         Phone: EPhone.value,
-                        username: username.value,
+                        username: Eusername.value,
                         Email: Email.value,
                         password: userpassword.value,
                     })
@@ -196,9 +205,18 @@
             }
         }
 
+        function addsignup() {
+            document.querySelector('.login').style.display = 'none';
+            document.querySelector('.signup').style.display = 'block';
+        }
+
+        function addsignin() {
+            document.querySelector('.signup').style.display = 'none';
+            document.querySelector('.login').style.display = 'block';
+        }
+
         logged.addEventListener('click', verify);
         signed.addEventListener('click', New);
-
     </script>
 </body>
 </html>
