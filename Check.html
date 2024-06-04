@@ -5,18 +5,94 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="script.js"></script>
     <title>Loot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        .container a {
+            font-size: 24px;
+            display: block;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .container input {
+            width: calc(100% - 24px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            display: block;
+            font-size: 16px;
+        }
+        .container button,
+        .container input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .container button:hover,
+        .container input[type="submit"]:hover {
+            background-color: #218838;
+        }
+        .container a[href="#"] {
+            font-size: 14px;
+            color: #007bff;
+            text-decoration: none;
+            text-align: center;
+            display: block;
+            margin-top: 10px;
+        }
+        .container a[href="#"]:hover {
+            text-decoration: underline;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+            .container input {
+                padding: 8px;
+                font-size: 14px;
+            }
+            .container button,
+            .container input[type="submit"] {
+                padding: 8px;
+                font-size: 14px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="Ritendra">
+    <div class="container Ritendra">
         <div class="login">
-            <a>Sign_In</a>
+            <a>Sign In</a>
             <input type="text" id="Susername" placeholder="Enter Username" required>
             <input type="password" id="Spassword" placeholder="Enter password" required>
             <button id="logged" type="submit">Login</button>
             <a onclick="addsignup()" href="#">Register yourself</a>
         </div>
         <form id="signupForm" class="signup" style="display: none;">
-            <a>Sign_Up</a>
+            <a>Sign Up</a>
             <input type="text" id="EName" placeholder="Enter Your Name" required>
             <input type="number" id="EAge" placeholder="Enter your Age" required>
             <input type="tel" id="EPhone" placeholder="(+Country Code) 999-999-9999" pattern="^\(\+\d{1,3}\) \d{3}-\d{3}-\d{4}$" required>
@@ -75,11 +151,12 @@
             var form = document.getElementById("signupForm");
             console.log("validation function invoked");
             if (form.checkValidity() === false) {
-                // This will display the browser's built-in validation messages
-                formvalid= false;
-                console.log("Here form became invalid");
+                formvalid = false;
+                console.log("Form is invalid");
+            } else {
+                formvalid = true;
+                console.log("Form is valid");
             }
-            else {formvalid = true; console.log("Form Became valid");}
         }
 
         let EName = document.getElementById('EName');
@@ -94,7 +171,7 @@
             console.log("Entered New function");
             validateForm();
             if (formvalid == true) {
-                console.log("entered to check password");
+                console.log("Checking password");
                 if (userpassword.value == Cpassword.value) {
                     set(ref(db, 'LootUsers/' + username.value), {
                         Name: EName.value,
@@ -115,12 +192,13 @@
                     alert("New Password and Confirm Password should be the same");
                 }
             } else {
-                alert("Please Fill Properly");
+                alert("Please fill out the form properly");
             }
         }
 
         logged.addEventListener('click', verify);
         signed.addEventListener('click', New);
 
-  </script>
+    </script>
+</body>
 </html>
