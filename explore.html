@@ -26,7 +26,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            background-color: black; /* Ensures the container background is black */
+            background-color: black;
         }
         .video-container {
             flex: 1;
@@ -48,7 +48,7 @@
             box-sizing: border-box;
             position: absolute;
             bottom: 0;
-            z-index: 10; /* Ensures the controls are on top of the video */
+            z-index: 10;
         }
         .controls button {
             border: 2px solid blue;
@@ -59,42 +59,40 @@
             cursor: pointer;
         }
         .sidebar {
-            background-color: blue;
-            width: 200px;
+            background-color: white;
+            width: 300px;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            padding: 20px 0;
+            align-items: flex-start;
+            padding: 20px;
             box-sizing: border-box;
             position: fixed;
-            left: -200px; /* Hidden by default */
+            left: -300px;
             top: 0;
             height: 100%;
             transition: left 0.3s ease;
-            z-index: 20; /* Ensures the sidebar is on top of the container */
+            z-index: 20;
         }
         .sidebar.show {
             left: 0;
         }
         .sidebar button {
-            width: 80%;
-            background-color: white;
-            border: 2px solid blue;
-            color: blue;
-            padding: 10px 20px;
+            width: 100%;
+            background-color: transparent;
+            border: none;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            font-size: 18px;
             cursor: pointer;
-            border-radius: 5px;
-            font-size: 16px;
-            margin: 10px 0;
-            text-align: center;
+            border-bottom: 1px solid #e0e0e0;
+            text-align: left;
         }
-        .sidebar button.active {
-            background-color: rgb(138, 135, 135);
-            color: black;
+        .sidebar button.active, .sidebar button:hover {
+            background-color: rgb(82, 67, 247);
         }
-        .sidebar button:hover {
-            background-color: blue;
-            color: white;
+        .sidebar .icon {
+            margin-right: 10px;
         }
         .menu-button {
             position: absolute;
@@ -107,14 +105,13 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
-            z-index: 30; /* Ensures the menu button is on top */
+            z-index: 30;
         }
         .menu-button.hidden {
             display: none;
         }
         .menu-button:hover {
             background-color: darkblue;
-            transform: scale(1.1);
         }
         .back-button {
             background-color: white;
@@ -125,6 +122,7 @@
             cursor: pointer;
             font-size: 16px;
             margin-top: auto;
+            margin-bottom: 20px;
         }
         .back-button:hover {
             background-color: blue;
@@ -134,11 +132,30 @@
 </head>
 <body>
     <div class="sidebar" id="sidebar">
-        <button onclick="window.location.href='acc.html'">Account</button>
-        <button onclick="window.location.href='shop.html'">My Shop</button>
-        <button onclick="window.location.href='loot.html'">Loot</button>
-        <button class="active">Explore</button>
-        <button onclick="window.location.href='rewards.html'"">Rewards</button>
+        <button onclick="window.location.href='acc.html'">
+            <span class="icon">👤</span>
+            <span class="label">Account</span>
+        </button>
+        <button onclick="window.location.href='shop.html'">
+            <span class="icon">🛒</span>
+            <span class="label">My Shop</span>
+        </button>
+        <button onclick="window.location.href='loot.html'">
+            <span class="icon">🎁</span>
+            <span class="label">Loot</span>
+        </button>
+        <button class="active" >
+            <span class="icon">🔍</span>
+            <span class="label">Explore</span>
+        </button>
+        <button onclick="window.location.href='rewards.html'">
+            <span class="icon">🏆</span>
+            <span class="label">Rewards</span>
+        </button>
+        <button class="dark-mode-toggle" onclick="toggleDarkMode()">
+            <span class="icon">🌙</span>
+            <span class="label">Dark Mode</span>
+        </button>
         <button class="back-button" onclick="toggleSidebar()">←</button>
     </div>
     <div class="container">
@@ -203,14 +220,12 @@
             const yDiff = yDown - yUp;
 
             if (Math.abs(xDiff) > Math.abs(yDiff)) {
-                return; // Ignore horizontal swipes
+                return;
             }
 
             if (yDiff > 0) {
-                // Swipe up
                 showNextVideo();
             } else {
-                // Swipe down
                 showPreviousVideo();
             }
 
@@ -252,10 +267,15 @@
         }
 
         function toggleSidebar() {
-            var sidebar = document.getElementById('sidebar');
-            var menuButton = document.getElementById('menu-button');
+            const sidebar = document.getElementById('sidebar');
+            const menuButton = document.getElementById('menu-button');
             sidebar.classList.toggle('show');
             menuButton.classList.toggle('hidden');
+        }
+
+        function toggleDarkMode() {
+            const body = document.body;
+            body.classList.toggle('dark-mode');
         }
     </script>
 </body>
