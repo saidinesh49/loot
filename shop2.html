@@ -9,71 +9,70 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            color: #0000ff;
-            background-color: #fff;
+            display: flex;
+            height: 100vh;
+            background-color: #F3F4F6; /* Light background color */
+            color: #1F2937; /* Dark gray color for text */
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body.dark-mode {
+            background-color: #1F2937; /* Dark background color */
+            color: #F3F4F6; /* Light color for text */
         }
 
         .container {
             display: flex;
             height: 100vh;
+            width: 100%;
         }
 
         .sidebar {
-            background-color: blue;
-            width: 200px;
+            background-color: #FFFFFF; /* White background for sidebar */
+            width: 250px; /* Expanded width */
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 20px 0;
             box-sizing: border-box;
             position: fixed;
-            left: -200px; /* Hidden by default */
             top: 0;
             height: 100%;
-            transition: left 0.3s ease;
-            z-index: 20; /* Ensures the sidebar is on top */
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+            z-index: 10; /* Ensure it is above the content */
+            transition: width 0.3s;
         }
 
-        .sidebar.show {
-            left: 0;
+        .sidebar.narrow {
+            width: 80px; /* Narrow width */
         }
 
-        .sidebar button {
-            width: 80%;
-            background-color: white;
-            border: 2px solid blue;
-            color: blue;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 5px;
-            font-size: 16px;
-            margin: 10px 0;
-            text-align: center;
-        }
-
-        .sidebar button.active {
-            background-color: rgb(138, 135, 135);
-            color: black;
-        }
-
-        .sidebar button:hover {
-            background-color: blue;
-            color: white;
-        }
-
-        .sidebar-buttn.active {
-            background-color: #ccc;
-            color: #0000ff;
-        }
-
-        .user-section {
-            margin-top: auto;
-            padding: 15px;
-            background-color: #0000ff;
+        .sidebar button, .sidebar .dark-mode-toggle {
             width: 100%;
-            text-align: center;
-            font-size: 16px;
-            color: #fff;
+            background-color: transparent;
+            border: none;
+            color: #6B7280; /* Gray color for icons */
+            padding: 15px 20px;
+            cursor: pointer;
+            font-size: 18px; /* Icon size */
+            text-align: left;
+            transition: background-color 0.2s, color 0.2s; /* Smooth color transition */
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar button:hover, .sidebar .dark-mode-toggle:hover {
+            background-color: #E5E7EB; /* Light gray on hover */
+            color: #1F2937; /* Dark color on hover */
+        }
+
+        .sidebar .icon {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+
+        .sidebar.narrow .label {
+            display: none;
         }
 
         .main-content {
@@ -83,17 +82,18 @@
             justify-content: flex-start;
             align-items: center;
             padding: 20px;
-            margin-left: 200px; /* Adjusted for the sidebar */
+            margin-left: 250px; /* Adjusted for the sidebar */
             transition: margin-left 0.3s ease;
+            width: calc(100% - 250px); /* Adjust width to account for sidebar */
         }
 
-        .main-content.shifted {
-            margin-left: 0;
+        .sidebar.narrow ~ .main-content {
+            width: calc(100% - 80px);
+            margin-left: 80px;
         }
 
         h1 {
-            font-size: 24px;
-            margin-bottom: 20px;
+            font-size: 36px;
         }
 
         .section {
@@ -134,59 +134,88 @@
             background-color: #3333ff;
         }
 
-        .menu-button {
+        .toggle-button {
             position: absolute;
             top: 20px;
-            left: 20px;
-            background-color: blue;
+            left: 250px;
+            transform: translateX(-50%);
+            background-color: #3B82F6; /* Blue color */
             color: white;
             border: none;
             padding: 10px;
-            border-radius: 5px;
+            border-radius: 50%;
             cursor: pointer;
             font-size: 16px;
-            z-index: 30; /* Ensures the menu button is on top */
-            transition: background-color 0.3s ease, transform 0.3s ease;
+            z-index: 20; /* Ensure it is above the sidebar */
+            transition: background-color 0.2s, transform 0.2s; /* Smooth transition */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .toggle-button:hover {
+            background-color: #2563EB; /* Darker blue on hover */
+            transform: scale(1.1); /* Slightly larger on hover */
         }
 
-        .menu-button:hover {
-            background-color: darkblue;
-            transform: scale(1.1);
+        .sidebar.narrow + .toggle-button {
+            left: 80px;
         }
 
-        .menu-button.hidden {
-            display: none;
+        .dark-mode-toggle {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
         }
 
-        .back-button {
-            background-color: white;
-            color: blue;
-            border: 2px solid blue;
-            padding: 5px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: auto;
+        .dark-mode .sidebar {
+            background-color: #374151; /* Dark gray background for sidebar */
         }
 
-        .back-button:hover {
-            background-color: blue;
-            color: white;
+        .dark-mode .sidebar button, .dark-mode .sidebar .dark-mode-toggle {
+            color: #D1D5DB; /* Light gray color for icons */
+        }
+
+        .dark-mode .sidebar button:hover, .dark-mode .sidebar .dark-mode-toggle:hover {
+            background-color: #4B5563; /* Dark gray on hover */
+            color: #F3F4F6; /* Light color on hover */
+        }
+
+        .dark-mode .toggle-button {
+            background-color: #1F2937; /* Dark button color */
+            color: #F3F4F6; /* Light icon color */
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="sidebar" id="sidebar">
-            <button onclick="window.location.href='acc.html'">Account</button>
-            <button class="active">My Shop</button>
-            <button onclick="window.location.href='loot.html'">Loot</button>
-            <button onclick="window.location.href='explore.html'">Explore</button>
-            <button onclick="window.location.href='rewards.html'"">Rewards</button>
-            <button class="back-button" onclick="toggleSidebar()">←</button>
+            <button onclick="window.location.href='acc.html'">
+                <span class="icon">👤</span>
+                <span class="label">Account</span>
+            </button>
+            <button class="active">
+                <span class="icon">🛒</span>
+                <span class="label">My Shop</span>
+            </button>
+            <button onclick="window.location.href='loot.html'">
+                <span class="icon">🎁</span>
+                <span class="label">Loot</span>
+            </button>
+            <button onclick="window.location.href='explore.html'">
+                <span class="icon">🔍</span>
+                <span class="label">Explore</span>
+            </button>
+            <button onclick="window.location.href='rewards.html'">
+                <span class="icon">🏆</span>
+                <span class="label">Rewards</span>
+            </button>
+            <button class="dark-mode-toggle" onclick="toggleDarkMode()">
+                <span class="icon">🌙</span>
+                <span class="label">Dark Mode</span>
+            </button>
         </div>
+        <button class="toggle-button" id="toggleButton" onclick="toggleSidebar()">></button>
         <div class="main-content" id="content">
-            <button class="menu-button" id="menuButton" onclick="toggleSidebar()">☰</button>
             <h1>Shop</h1>
             <div class="section">
                 <div class="section-title">About</div>
@@ -207,10 +236,19 @@
         function toggleSidebar() {
             var sidebar = document.getElementById('sidebar');
             var content = document.getElementById('content');
-            var menuButton = document.getElementById('menuButton');
-            sidebar.classList.toggle('show');
+            var toggleButton = document.getElementById('toggleButton');
+            sidebar.classList.toggle('narrow');
             content.classList.toggle('shifted');
-            menuButton.classList.toggle('hidden');
+            if (sidebar.classList.contains('narrow')) {
+                toggleButton.innerHTML = '>';
+            } else {
+                toggleButton.innerHTML = '>';
+            }
+        }
+
+        function toggleDarkMode() {
+            var body = document.body;
+            body.classList.toggle('dark-mode');
         }
     </script>
 </body>
