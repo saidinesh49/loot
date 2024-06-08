@@ -182,25 +182,27 @@
             <button class="active">My Shop</button>
             <button onclick="window.location.href='loot.html'">Loot</button>
             <button onclick="window.location.href='explore.html'">Explore</button>
-            <button onclick="window.location.href='rewards.html'"">Rewards</button>
+            <button onclick="window.location.href='rewards.html'">Rewards</button>
             <button class="back-button" onclick="toggleSidebar()">←</button>
         </div>
         <div class="main-content" id="content">
             <button class="menu-button" id="menuButton" onclick="toggleSidebar()">☰</button>
             <h1>Shop</h1>
-            <div class="section">
-                <div class="section-title">About</div>
-                <input class="input-field" type="text" placeholder="About your product">
-            </div>
-            <div class="section">
-                <div class="section-title">Upload Media</div>
-                <button class="upload-btn">Upload from Computer</button>
-            </div>
-            <div class="section">
-                <div class="section-title">Connect</div>
-                <input class="input-field" type="text" placeholder="Upload your website link or portfolio link in ONDC">
-            </div>
-            <button class="add-more-btn">ADD More</button>
+            <form id="productUploadForm" class="product-upload">
+                <div class="section">
+                    <div class="section-title">About</div>
+                    <input class="input-field" type="text" id="productDescription" placeholder="About your product" required>
+                </div>
+                <div class="section">
+                    <div class="section-title">Upload Media</div>
+                    <input class="input-field" type="file" id="productVideo" accept="video/*" required>
+                </div>
+                <div class="section">
+                    <div class="section-title">Connect</div>
+                    <input class="input-field" type="url" id="productLink" placeholder="Upload your website link or portfolio link in ONDC" required>
+                </div>
+                <button type="submit" class="upload-btn">Upload Product</button>
+            </form>
         </div>
     </div>
     <script>
@@ -212,6 +214,46 @@
             content.classList.toggle('shifted');
             menuButton.classList.toggle('hidden');
         }
+    </script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+        import { getDatabase, ref as dbRef, set, push } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyClf6W3B2nesvjfZtRSMcjbt6NRp6uy-Po",
+            authDomain: "lootbase-4d01f.firebaseapp.com",
+            projectId: "lootbase-4d01f",
+            storageBucket: "lootbase-4d01f.appspot.com",
+            messagingSenderId: "350264696657",
+            appId: "1:350264696657:web:9af597da2f5fd2970d7d70",
+            measurementId: "G-YQK38EMPJK"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const storage = getStorage();
+        const db = getDatabase();
+
+        document.getElementById('productUploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const productDescription = document.getElementById('productDescription').value;
+            const productVideo = document.getElementById('productVideo').files[0];
+            const productLink = document.getElementById('productLink').value;
+
+            const videoRef = storageRef(storage, 'productVideos/' + productVideo.name);
+            await uploadBytes(videoRef, productVideo);
+            const videoUrl = await getDownloadURL(videoRef);
+
+            const newProductRef = push(dbRef(db, 'Products'));
+            await set(newProductRef, {
+                description: productDescription,
+                videoUrl: videoUrl,
+                link: productLink,
+            });
+
+            alert("Product Uploaded Successfully!");
+            window.location.reload();
+        });
     </script>
 </body>
 </html>
