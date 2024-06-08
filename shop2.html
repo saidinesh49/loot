@@ -9,70 +9,71 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            display: flex;
-            height: 100vh;
-            background-color: #F3F4F6; /* Light background color */
-            color: #1F2937; /* Dark gray color for text */
-            transition: background-color 0.3s, color 0.3s;
-        }
-
-        body.dark-mode {
-            background-color: #1F2937; /* Dark background color */
-            color: #F3F4F6; /* Light color for text */
+            color: #0000ff;
+            background-color: #fff;
         }
 
         .container {
             display: flex;
             height: 100vh;
-            width: 100%;
         }
 
         .sidebar {
-            background-color: #FFFFFF; /* White background for sidebar */
-            width: 250px; /* Expanded width */
+            background-color: blue;
+            width: 200px;
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 20px 0;
             box-sizing: border-box;
             position: fixed;
+            left: -200px; /* Hidden by default */
             top: 0;
             height: 100%;
-            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-            z-index: 10; /* Ensure it is above the content */
-            transition: width 0.3s;
+            transition: left 0.3s ease;
+            z-index: 20; /* Ensures the sidebar is on top */
         }
 
-        .sidebar.narrow {
-            width: 80px; /* Narrow width */
+        .sidebar.show {
+            left: 0;
         }
 
-        .sidebar button, .sidebar .dark-mode-toggle {
-            width: 100%;
-            background-color: transparent;
-            border: none;
-            color: #6B7280; /* Gray color for icons */
-            padding: 15px 20px;
+        .sidebar button {
+            width: 80%;
+            background-color: white;
+            border: 2px solid blue;
+            color: blue;
+            padding: 10px 20px;
             cursor: pointer;
-            font-size: 18px; /* Icon size */
-            text-align: left;
-            transition: background-color 0.2s, color 0.2s; /* Smooth color transition */
-            display: flex;
-            align-items: center;
+            border-radius: 5px;
+            font-size: 16px;
+            margin: 10px 0;
+            text-align: center;
         }
 
-        .sidebar button:hover, .sidebar .dark-mode-toggle:hover {
-            background-color: #E5E7EB; /* Light gray on hover */
-            color: #1F2937; /* Dark color on hover */
+        .sidebar button.active {
+            background-color: rgb(138, 135, 135);
+            color: black;
         }
 
-        .sidebar .icon {
-            font-size: 24px;
-            margin-right: 10px;
+        .sidebar button:hover {
+            background-color: blue;
+            color: white;
         }
 
-        .sidebar.narrow .label {
-            display: none;
+        .sidebar-buttn.active {
+            background-color: #ccc;
+            color: #0000ff;
+        }
+
+        .user-section {
+            margin-top: auto;
+            padding: 15px;
+            background-color: #0000ff;
+            width: 100%;
+            text-align: center;
+            font-size: 16px;
+            color: #fff;
         }
 
         .main-content {
@@ -82,18 +83,17 @@
             justify-content: flex-start;
             align-items: center;
             padding: 20px;
-            margin-left: 250px; /* Adjusted for the sidebar */
+            margin-left: 200px; /* Adjusted for the sidebar */
             transition: margin-left 0.3s ease;
-            width: calc(100% - 250px); /* Adjust width to account for sidebar */
         }
 
-        .sidebar.narrow ~ .main-content {
-            width: calc(100% - 80px);
-            margin-left: 80px;
+        .main-content.shifted {
+            margin-left: 0;
         }
 
         h1 {
-            font-size: 36px;
+            font-size: 24px;
+            margin-bottom: 20px;
         }
 
         .section {
@@ -134,122 +134,126 @@
             background-color: #3333ff;
         }
 
-        .toggle-button {
+        .menu-button {
             position: absolute;
             top: 20px;
-            left: 250px;
-            transform: translateX(-50%);
-            background-color: #3B82F6; /* Blue color */
+            left: 20px;
+            background-color: blue;
             color: white;
             border: none;
             padding: 10px;
-            border-radius: 50%;
+            border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
-            z-index: 20; /* Ensure it is above the sidebar */
-            transition: background-color 0.2s, transform 0.2s; /* Smooth transition */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .toggle-button:hover {
-            background-color: #2563EB; /* Darker blue on hover */
-            transform: scale(1.1); /* Slightly larger on hover */
+            z-index: 30; /* Ensures the menu button is on top */
+            transition: background-color 0.3s ease, transform 0.3s ease;
         }
 
-        .sidebar.narrow + .toggle-button {
-            left: 80px;
+        .menu-button:hover {
+            background-color: darkblue;
+            transform: scale(1.1);
         }
 
-        .dark-mode-toggle {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
+        .menu-button.hidden {
+            display: none;
         }
 
-        .dark-mode .sidebar {
-            background-color: #374151; /* Dark gray background for sidebar */
+        .back-button {
+            background-color: white;
+            color: blue;
+            border: 2px solid blue;
+            padding: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: auto;
         }
 
-        .dark-mode .sidebar button, .dark-mode .sidebar .dark-mode-toggle {
-            color: #D1D5DB; /* Light gray color for icons */
-        }
-
-        .dark-mode .sidebar button:hover, .dark-mode .sidebar .dark-mode-toggle:hover {
-            background-color: #4B5563; /* Dark gray on hover */
-            color: #F3F4F6; /* Light color on hover */
-        }
-
-        .dark-mode .toggle-button {
-            background-color: #1F2937; /* Dark button color */
-            color: #F3F4F6; /* Light icon color */
+        .back-button:hover {
+            background-color: blue;
+            color: white;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="sidebar" id="sidebar">
-            <button onclick="window.location.href='acc.html'">
-                <span class="icon">👤</span>
-                <span class="label">Account</span>
-            </button>
-            <button class="active">
-                <span class="icon">🛒</span>
-                <span class="label">My Shop</span>
-            </button>
-            <button onclick="window.location.href='loot.html'">
-                <span class="icon">🎁</span>
-                <span class="label">Loot</span>
-            </button>
-            <button onclick="window.location.href='explore.html'">
-                <span class="icon">🔍</span>
-                <span class="label">Explore</span>
-            </button>
-            <button onclick="window.location.href='rewards.html'">
-                <span class="icon">🏆</span>
-                <span class="label">Rewards</span>
-            </button>
-            <button class="dark-mode-toggle" onclick="toggleDarkMode()">
-                <span class="icon">🌙</span>
-                <span class="label">Dark Mode</span>
-            </button>
+            <button onclick="window.location.href='acc.html'">Account</button>
+            <button class="active">My Shop</button>
+            <button onclick="window.location.href='loot.html'">Loot</button>
+            <button onclick="window.location.href='explore.html'">Explore</button>
+            <button onclick="window.location.href='rewards.html'">Rewards</button>
+            <button class="back-button" onclick="toggleSidebar()">←</button>
         </div>
-        <button class="toggle-button" id="toggleButton" onclick="toggleSidebar()">></button>
         <div class="main-content" id="content">
+            <button class="menu-button" id="menuButton" onclick="toggleSidebar()">☰</button>
             <h1>Shop</h1>
-            <div class="section">
-                <div class="section-title">About</div>
-                <input class="input-field" type="text" placeholder="About your product">
-            </div>
-            <div class="section">
-                <div class="section-title">Upload Media</div>
-                <button class="upload-btn">Upload from Computer</button>
-            </div>
-            <div class="section">
-                <div class="section-title">Connect</div>
-                <input class="input-field" type="text" placeholder="Upload your website link or portfolio link in ONDC">
-            </div>
-            <button class="add-more-btn">ADD More</button>
+            <form id="productUploadForm" class="product-upload">
+                <div class="section">
+                    <div class="section-title">About</div>
+                    <input class="input-field" type="text" id="productDescription" placeholder="About your product" required>
+                </div>
+                <div class="section">
+                    <div class="section-title">Upload Media</div>
+                    <input class="input-field" type="file" id="productVideo" accept="video/*" required>
+                </div>
+                <div class="section">
+                    <div class="section-title">Connect</div>
+                    <input class="input-field" type="url" id="productLink" placeholder="Upload your website link or portfolio link in ONDC" required>
+                </div>
+                <button type="submit" class="upload-btn">Upload Product</button>
+            </form>
         </div>
     </div>
     <script>
         function toggleSidebar() {
             var sidebar = document.getElementById('sidebar');
             var content = document.getElementById('content');
-            var toggleButton = document.getElementById('toggleButton');
-            sidebar.classList.toggle('narrow');
+            var menuButton = document.getElementById('menuButton');
+            sidebar.classList.toggle('show');
             content.classList.toggle('shifted');
-            if (sidebar.classList.contains('narrow')) {
-                toggleButton.innerHTML = '>';
-            } else {
-                toggleButton.innerHTML = '>';
-            }
+            menuButton.classList.toggle('hidden');
         }
+    </script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+        import { getDatabase, ref as dbRef, set, push } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-        function toggleDarkMode() {
-            var body = document.body;
-            body.classList.toggle('dark-mode');
-        }
+        const firebaseConfig = {
+            apiKey: "AIzaSyClf6W3B2nesvjfZtRSMcjbt6NRp6uy-Po",
+            authDomain: "lootbase-4d01f.firebaseapp.com",
+            projectId: "lootbase-4d01f",
+            storageBucket: "lootbase-4d01f.appspot.com",
+            messagingSenderId: "350264696657",
+            appId: "1:350264696657:web:9af597da2f5fd2970d7d70",
+            measurementId: "G-YQK38EMPJK"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const storage = getStorage();
+        const db = getDatabase();
+
+        document.getElementById('productUploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const productDescription = document.getElementById('productDescription').value;
+            const productVideo = document.getElementById('productVideo').files[0];
+            const productLink = document.getElementById('productLink').value;
+
+            const videoRef = storageRef(storage, 'productVideos/' + productVideo.name);
+            await uploadBytes(videoRef, productVideo);
+            const videoUrl = await getDownloadURL(videoRef);
+
+            const newProductRef = push(dbRef(db, 'Products'));
+            await set(newProductRef, {
+                description: productDescription,
+                videoUrl: videoUrl,
+                link: productLink,
+            });
+
+            alert("Product Uploaded Successfully!");
+            window.location.reload();
+        });
     </script>
 </body>
 </html>
