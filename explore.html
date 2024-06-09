@@ -3,67 +3,262 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reels Interface</title>
+    <title>Explore - Apploot</title>
+    <link rel="icon" href="loot_logo.png" type="image/png">
     <style>
-        body, html {
+        body {
             margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             font-family: Arial, sans-serif;
-            background-color: #0000ff;
+            color: #0000ff;
+            background-color: #fff;
+            overflow-x: hidden; /* Prevent horizontal scroll */
         }
 
         .container {
-            width: 100%;
-            height: 100%;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .sidebar {
+            background-color: blue;
+            width: 200px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            padding: 20px 0;
+            box-sizing: border-box;
+            position: fixed;
+            left: -200px; /* Hidden by default */
+            top: 0;
+            height: 100%;
+            transition: left 0.3s ease;
+            z-index: 20; /* Ensures the sidebar is on top */
+        }
+
+        .sidebar.show {
+            left: 0;
+        }
+
+        .sidebar button {
+            width: 80%;
+            background-color: white;
+            border: 2px solid blue;
+            color: blue;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            margin: 10px 0;
+            text-align: center;
+        }
+
+        .sidebar button.active {
+            background-color: rgb(138, 135, 135);
+            color: black;
+        }
+
+        .sidebar button:hover {
+            background-color: blue;
+            color: white;
+        }
+
+        .user-section {
+            margin-top: auto;
+            padding: 15px;
+            background-color: #0000ff;
+            width: 100%;
+            text-align: center;
+            font-size: 16px;
+            color: #fff;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 20px;
+            margin-left: 200px; /* Adjusted for the sidebar */
+            transition: margin-left 0.3s ease;
             overflow-y: auto;
+        }
+
+        .main-content.shifted {
+            margin-left: 0;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .menu-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background-color: blue;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            z-index: 30; /* Ensures the menu button is on top */
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .menu-button:hover {
+            background-color: darkblue;
+            transform: scale(1.1);
+        }
+
+        .menu-button.hidden {
+            display: none;
+        }
+
+        .back-button {
+            background-color: white;
+            color: blue;
+            border: 2px solid blue;
+            padding: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: auto;
+        }
+
+        .back-button:hover {
+            background-color: blue;
+            color: white;
         }
 
         .video-container {
             width: 100%;
             max-width: 500px;
             margin: 20px 0;
-            background-color: #fff;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            position: relative;
+            cursor: pointer;
         }
 
         video {
             width: 100%;
             height: auto;
             border-radius: 10px;
+            outline: none; /* Remove the outline */
         }
 
-        .info {
-            margin-top: 10px;
-            text-align: center;
+        .overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 0 0 10px 10px;
+            color: #ffffff;
+            display: none;
+            transition: opacity 0.3s ease;
         }
 
-        .info p {
+        .video-container:hover .overlay {
+            display: block;
+        }
+
+        .overlay p {
             margin: 5px 0;
         }
 
-        .info a {
+        .overlay a {
             color: #0000ff;
             text-decoration: none;
+            background-color: #ffffff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
         }
 
-        .info a:hover {
-            text-decoration: underline;
+        .overlay a:hover {
+            background-color: #ffffff;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: fixed;
+                left: -100%;
+            }
+
+            .sidebar.show {
+                left: 0;
+            }
+
+            .sidebar button {
+                width: 90%;
+            }
+
+            .main-content {
+                margin-left: 0;
+                margin-top: 60px; /* Adjust for the menu button */
+            }
+
+            .menu-button {
+                top: 10px;
+                left: 10px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container"></div>
+    <div class="container">
+        <div class="sidebar" id="sidebar">
+            <button onclick="window.location.href='acc.html'">Account</button>
+            <button onclick="window.location.href='shop.html'">My Shop</button>
+            <button onclick="window.location.href='loot.html'">Loot</button>
+            <button class="active" onclick="window.location.href='explore.html'">Explore</button>
+            <button onclick="window.location.href='rewards.html'">Rewards</button>
+            <button class="back-button" onclick="toggleSidebar()">←</button>
+        </div>
+        <div class="main-content" id="content">
+            <button class="menu-button" id="menuButton" onclick="toggleSidebar()">☰</button>
+            <h1>Explore</h1>
+            <div id="reels-container"></div>
+        </div>
+    </div>
+    <script>
+        function toggleSidebar() {
+            var sidebar = document.getElementById('sidebar');
+            var content = document.getElementById('content');
+            var menuButton = document.getElementById('menuButton');
+            sidebar.classList.toggle('show');
+            content.classList.toggle('shifted');
+            menuButton.classList.toggle('hidden');
+        }
+
+        let currentPlayingVideo = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('reels-container');
+            container.addEventListener('click', (e) => {
+                if (e.target.tagName === 'VIDEO') {
+                    const clickedVideo = e.target;
+
+                    if (currentPlayingVideo && currentPlayingVideo !== clickedVideo) {
+                        currentPlayingVideo.pause();
+                    }
+
+                    if (clickedVideo.paused) {
+                        clickedVideo.play();
+                        currentPlayingVideo = clickedVideo;
+                    } else {
+                        clickedVideo.pause();
+                    }
+                }
+            });
+        });
+    </script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getDatabase, ref as dbRef, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
@@ -83,31 +278,43 @@
 
         const productsRef = dbRef(db, 'Products');
         onValue(productsRef, (snapshot) => {
-            const container = document.querySelector('.container');
+            const container = document.getElementById('reels-container');
             container.innerHTML = ''; // Clear previous content
 
             snapshot.forEach((childSnapshot) => {
-                const product = childSnapshot.val();
-                const productElement = document.createElement('div');
-                productElement.classList.add('video-container');
+            const product = childSnapshot.val();
+            const productElement = document.createElement('div');
+            productElement.classList.add('video-container');
 
-                const videoElement = document.createElement('video');
-                videoElement.src = product.videoUrl;
-                videoElement.controls = true;
+            // Product name element
+            const productNameElement = document.createElement('strong');
+            productNameElement.textContent = product.name;
 
-                const descriptionElement = document.createElement('p');
-                descriptionElement.textContent = product.description;
+            // Description element
+            const descriptionElement = document.createElement('p');
+            descriptionElement.textContent = product.description;
 
-                const linkElement = document.createElement('a');
-                linkElement.href = product.link;
-                linkElement.textContent = 'Buy Now';
-                linkElement.target = '_blank';
+            const videoElement = document.createElement('video');
+            videoElement.src = product.videoUrl;
+            videoElement.controls = false;
+            videoElement.setAttribute('playsinline', '');
 
-                productElement.appendChild(videoElement);
-                productElement.appendChild(descriptionElement);
-                productElement.appendChild(linkElement);
-                container.appendChild(productElement);
-            });
+            const overlay = document.createElement('div');
+            overlay.classList.add('overlay');
+
+            const buyButton = document.createElement('a');
+            buyButton.href = product.link;
+            buyButton.textContent = 'Buy Now';
+            overlay.appendChild(productNameElement);
+            overlay.appendChild(descriptionElement);
+            overlay.appendChild(buyButton);
+
+            productElement.appendChild(videoElement);
+            productElement.appendChild(overlay);
+
+            container.appendChild(productElement);
+        });
+
         });
     </script>
 </body>

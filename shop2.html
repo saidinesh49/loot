@@ -190,6 +190,10 @@
             <h1>Shop</h1>
             <form id="productUploadForm" class="product-upload">
                 <div class="section">
+                    <div class="section-title">Product Name</div>
+                    <input class="input-field" type="text" id="productName" placeholder="Enter product name" required>
+                </div>
+                <div class="section">
                     <div class="section-title">About</div>
                     <input class="input-field" type="text" id="productDescription" placeholder="About your product" required>
                 </div>
@@ -235,25 +239,32 @@
         const db = getDatabase();
 
         document.getElementById('productUploadForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const productDescription = document.getElementById('productDescription').value;
-            const productVideo = document.getElementById('productVideo').files[0];
-            const productLink = document.getElementById('productLink').value;
+        e.preventDefault();
+        const productName = document.getElementById('productName').value;
+        const productDescription = document.getElementById('productDescription').value;
+        const productVideo = document.getElementById('productVideo').files[0];
+        const productLink = document.getElementById('productLink').value;
 
-            const videoRef = storageRef(storage, 'productVideos/' + productVideo.name);
-            await uploadBytes(videoRef, productVideo);
-            const videoUrl = await getDownloadURL(videoRef);
+        const currentTime = new Date();
+        const timeString = `${currentTime.getHours()}_${currentTime.getMinutes()}_${currentTime.getSeconds()}`;
+        const fileName = `${productName}_${timeString}.mp4`; // Ensure the file extension is included
 
-            const newProductRef = push(dbRef(db, 'Products'));
-            await set(newProductRef, {
-                description: productDescription,
-                videoUrl: videoUrl,
-                link: productLink,
-            });
+        const videoRef = storageRef(storage, `productVideos/${fileName}`);
+        await uploadBytes(videoRef, productVideo);
+        const videoUrl = await getDownloadURL(videoRef);
 
-            alert("Product Uploaded Successfully!");
-            window.location.reload();
+        const newProductRef = push(dbRef(db, 'Products'));
+        await set(newProductRef, {
+            name: productName,
+            description: productDescription,
+            videoUrl: videoUrl,
+            link: productLink,
         });
+
+        alert("Product Uploaded Successfully!");
+        window.location.reload();
+});
+
     </script>
 </body>
 </html>
