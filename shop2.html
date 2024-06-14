@@ -15,6 +15,7 @@
 
         .container {
             display: flex;
+            flex-direction: column;
             height: 100vh;
         }
 
@@ -83,7 +84,7 @@
             justify-content: flex-start;
             align-items: center;
             padding: 20px;
-            margin-left: 200px; /* Adjusted for the sidebar */
+            margin-left: 50px; /* Adjusted for the sidebar */
             transition: margin-left 0.3s ease;
         }
 
@@ -94,10 +95,12 @@
         h1 {
             font-size: 24px;
             margin-bottom: 20px;
+            text-align: center;
+            width: 100%;
         }
 
         .section {
-            width: 80%;
+            width: 100%; /* Adjusted for PC screens */
             margin-bottom: 20px;
             padding: 20px;
             border: 2px solid #0000ff;
@@ -107,7 +110,7 @@
 
         .section-title {
             font-size: 20px;
-            margin-bottom: 10px;
+            margin-bottom: 0;
         }
 
         .input-field, .upload-btn, .add-more-btn {
@@ -172,6 +175,75 @@
         .back-button:hover {
             background-color: blue;
             color: white;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 150px;
+            }
+
+            .sidebar.show {
+                width: 200px;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 10px;
+                text-align: center;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+
+            .section {
+                width: 90%;
+                padding: 15px;
+            }
+
+            .section-title {
+                font-size: 18px;
+            }
+
+            .input-field, .upload-btn, .add-more-btn {
+                font-size: 14px;
+                padding: 8px;
+            }
+
+            .menu-button {
+                top: 10px;
+                left: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sidebar button {
+                width: 90%;
+                font-size: 14px;
+                padding: 8px 16px;
+            }
+
+            .main-content {
+                padding: 5px;
+            }
+
+            .section {
+                width: 100%;
+                padding: 10px;
+            }
+
+            .input-field, .upload-btn, .add-more-btn {
+                font-size: 12px;
+                padding: 6px;
+            }
+
+            h1 {
+                font-size: 18px;
+            }
+
+            .section-title {
+                font-size: 16px;
+            }
         }
     </style>
 </head>

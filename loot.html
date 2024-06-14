@@ -79,7 +79,6 @@
             align-items: center;
             padding: 20px;
             box-sizing: border-box;
-            margin-left: 200px; /* Adjusted for the sidebar */
             transition: margin-left 0.3s ease;
         }
 
@@ -93,14 +92,18 @@
             justify-content: center;
             align-items: center;
             margin-bottom: 20px;
+            padding: 0 20px; /* Add padding for better spacing */
+            box-sizing: border-box;
         }
 
         .search-input {
-            width: 60%;
+            width: 100%; /* Adjusted for smaller screens */
+            max-width: 300px; /* Limit width on larger screens */
             padding: 10px;
             border: 2px solid #0000ff;
             border-radius: 5px;
             font-size: 16px;
+            box-sizing: border-box;
         }
 
         .search-icon, .profile-icon {
@@ -239,12 +242,21 @@
         }
 
         @media (max-width: 600px) {
+            .sidebar {
+                width: 100%; /* Full width on mobile */
+                left: -100%; /* Fully hidden by default */
+            }
+
+            .sidebar.show {
+                left: 0;
+            }
+
             .main-content {
                 margin-left: 0; /* No margin on mobile */
             }
 
             .search-input {
-                width: 70%; /* Adjusted for smaller screens */
+                width: 100%; /* Full width on mobile */
             }
 
             .section {
@@ -259,7 +271,7 @@
         <button onclick="window.location.href='shop.html'">My Shop</button>
         <button class="active">Loot</button>
         <button onclick="window.location.href='explore.html'">Explore</button>
-        <button onclick="window.location.href='rewards.html'"">Rewards</button>
+        <button onclick="window.location.href='rewards.html'">Rewards</button>
         <button class="back-button" onclick="toggleSidebar()">←</button>
     </div>
     <div class="main-content" id="main-content">

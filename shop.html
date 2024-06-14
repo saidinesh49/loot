@@ -10,6 +10,7 @@
             margin: 0;
             font-family: Arial, sans-serif;
             display: flex;
+            flex-direction: column;
             height: 100vh;
             background-color: white;
             color: blue;
@@ -158,6 +159,61 @@
             background-color: blue;
             color: white;
         }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 150px;
+            }
+
+            .sidebar.show {
+                width: 200px;
+            }
+
+            .content {
+                margin-left: 0;
+                padding: 10px;
+                text-align: center;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            p {
+                font-size: 18px;
+            }
+
+            .add-more-btn {
+                font-size: 16px;
+                padding: 10px 20px;
+            }
+
+            .menu-button {
+                top: 10px;
+                left: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sidebar button {
+                width: 90%;
+                font-size: 14px;
+                padding: 8px 16px;
+            }
+
+            .add-more-btn {
+                font-size: 14px;
+                padding: 8px 16px;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+
+            p {
+                font-size: 16px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -166,7 +222,7 @@
         <button class="active">My Shop</button>
         <button onclick="window.location.href='loot.html'">Loot</button>
         <button onclick="window.location.href='explore.html'">Explore</button>
-        <button onclick="window.location.href='rewards.html'"">Rewards</button>
+        <button onclick="window.location.href='rewards.html'">Rewards</button>
         <button class="back-button" onclick="toggleSidebar()">←</button>
     </div>
     <div class="content" id="content">

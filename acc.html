@@ -10,6 +10,7 @@
             margin: 0;
             font-family: Arial, sans-serif;
             display: flex;
+            flex-direction: column;
             height: 100vh;
             background-color: white;
             color: blue;
@@ -81,10 +82,12 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
         }
 
         .box h2 {
             margin: 0;
+            flex: 1;
         }
 
         .add-more-btn {
@@ -139,6 +142,49 @@
             background-color: blue;
             color: white;
         }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 150px;
+            }
+
+            .sidebar.show {
+                width: 200px;
+            }
+
+            .content {
+                margin-left: 0;
+                padding: 10px;
+                text-align: center;
+            }
+
+            .box {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .menu-button {
+                top: 10px;
+                left: 10px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sidebar button {
+                width: 90%;
+                font-size: 14px;
+                padding: 8px 16px;
+            }
+
+            .add-more-btn {
+                font-size: 14px;
+                padding: 8px 16px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -147,7 +193,7 @@
         <button onclick="window.location.href='shop.html'">My Shop</button>
         <button onclick="window.location.href='loot.html'">Loot</button>
         <button onclick="window.location.href='explore.html'">Explore</button>
-        <button onclick="window.location.href='rewards.html'"">Rewards</button>
+        <button onclick="window.location.href='rewards.html'">Rewards</button>
         <button class="back-button" onclick="toggleSidebar()">←</button>
     </div>
     <div class="content" id="content">
