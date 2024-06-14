@@ -8,164 +8,82 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color: #F3F4F6; /* Light background color */
-            color: #1F2937; /* Dark gray color for text */
-            transition: background-color 0.3s, color 0.3s;
+            color: #0000ff;
+            background-color: #fff;
         }
 
-        body.dark-mode {
-            background-color: #1F2937; /* Dark background color */
-            color: #F3F4F6; /* Light color for text */
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
         }
 
         .sidebar {
-            background-color: #FFFFFF; /* White background for sidebar */
-            width: 250px; /* Expanded width */
+            background-color: blue;
+            width: 200px;
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 20px 0;
             box-sizing: border-box;
             position: fixed;
+            left: -200px; /* Hidden by default */
             top: 0;
             height: 100%;
-            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-            z-index: 10; /* Ensure it is above the content */
-            transition: width 0.3s;
+            transition: left 0.3s ease;
+            z-index: 20; /* Ensures the sidebar is on top */
         }
 
-        .sidebar.narrow {
-            width: 80px; /* Narrow width */
+        .sidebar.show {
+            left: 0;
         }
 
-        .sidebar button, .sidebar .dark-mode-toggle {
-            width: 100%;
-            background-color: transparent;
-            border: none;
-            color: #6B7280; /* Gray color for icons */
-            padding: 15px 20px;
+        .sidebar button {
+            width: 80%;
+            background-color: white;
+            border: 2px solid blue;
+            color: blue;
+            padding: 10px 20px;
             cursor: pointer;
-            font-size: 18px; /* Icon size */
-            text-align: left;
-            transition: background-color 0.2s, color 0.2s; /* Smooth color transition */
-            display: flex;
-            align-items: center;
+            border-radius: 5px;
+            font-size: 16px;
+            margin: 10px 0;
+            text-align: center;
         }
 
-        .sidebar button:hover, .sidebar .dark-mode-toggle:hover {
-            background-color: #E5E7EB; /* Light gray on hover */
-            color: #1F2937; /* Dark color on hover */
+        .sidebar button.active {
+            background-color: rgb(138, 135, 135);
+            color: black;
         }
 
-        .sidebar .icon {
-            font-size: 24px;
-            margin-right: 10px;
+        .sidebar button:hover {
+            background-color: blue;
+            color: white;
         }
 
-        .sidebar.narrow .label {
-            display: none;
+        .user-section {
+            margin-top: auto;
+            padding: 15px;
+            background-color: #0000ff;
+            width: 100%;
+            text-align: center;
+            font-size: 16px;
+            color: #fff;
         }
 
         .main-content {
             flex: 1;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            padding: 20px;
-            box-sizing: border-box;
-            width: calc(100% - 250px); /* Adjust width to account for sidebar */
-            margin-left: 250px; /* Ensure content is next to sidebar */
-            transition: width 0.3s, margin-left 0.3s;
             justify-content: flex-start;
-        }
-
-        .sidebar.narrow ~ .main-content {
-            width: calc(100% - 80px);
-            margin-left: 80px;
-        }
-
-        h1 {
-            font-size: 24px; /* Adjusted for smaller screens */
-            color: #2600ff; /* Ensure h1 color is dark gray */
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .section {
-            width: 100%; /* Full width on mobile */
-            margin-bottom: 20px;
-            padding: 20px;
-            border: 2px solid #3B82F6;
-            border-radius: 20px;
-            box-sizing: border-box;
-            text-align: center;
-        }
-
-        .section-title {
-            font-size: 20px; /* Adjusted for smaller screens */
-            margin-bottom: 20px;
-            color: #2600ff; /* Ensure title color is dark gray */
-        }
-
-        .button-grid, .button-grid-wide {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .button-grid button, .button-grid-wide button, .special-button {
-            width: 80px; /* Adjusted for smaller screens */
-            height: 80px; /* Adjusted for smaller screens */
-            padding: 10px;
-            border: 2px solid #3B82F6;
-            border-radius: 20px;
-            background-color: white;
-            color: black;
-            font-size: 14px; /* Adjusted for smaller screens */
-            cursor: pointer;
-            box-sizing: border-box;
-            transition: background-color 0.2s, color 0.2s, transform 0.3s ease;
-        }
-
-        .button-grid button:hover, .button-grid-wide button:hover, .special-button:hover {
-            background-color: #3B82F6;
-            color: white;
-            transform: scale(1.1);
-        }
-
-        .toggle-button {
-            position: absolute;
-            top: 20px;
-            left: 250px;
-            transform: translateX(-50%);
-            background-color: #3B82F6; /* Blue color */
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 16px;
-            z-index: 20; /* Ensure it is above the sidebar */
-            transition: background-color 0.2s, transform 0.2s; /* Smooth transition */
-            display: flex;
             align-items: center;
-            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+            transition: margin-left 0.3s ease;
         }
 
-        .toggle-button:hover {
-            background-color: #2563EB; /* Darker blue on hover */
-            transform: scale(1.1); /* Slightly larger on hover */
-        }
-
-        .sidebar.narrow + .toggle-button {
-            left: 80px;
-        }
-
-        .dark-mode-toggle {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
+        .main-content.shifted {
+            margin-left: 0;
         }
 
         .search-container {
@@ -174,21 +92,25 @@
             justify-content: center;
             align-items: center;
             margin-bottom: 20px;
+            padding: 0 20px; /* Add padding for better spacing */
+            box-sizing: border-box;
         }
 
         .search-input {
-            width: 60%;
+            width: 100%; /* Adjusted for smaller screens */
+            max-width: 300px; /* Limit width on larger screens */
             padding: 10px;
-            border: 2px solid #3B82F6;
+            border: 2px solid #0000ff;
             border-radius: 5px;
             font-size: 16px;
+            box-sizing: border-box;
         }
 
         .search-icon, .profile-icon {
             width: 40px;
             height: 40px;
             background-color: white;
-            border: 2px solid #3B82F6;
+            border: 2px solid rgb(0, 0, 0);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -198,13 +120,9 @@
             box-sizing: border-box;
             transition: transform 0.3s ease;
         }
-        .sidebar button.active {
-            background-color: rgb(82, 67, 247);
-            color: rgb(255, 255, 255);
-        }
 
         .search-icon:hover, .profile-icon:hover {
-            background-color: #3B82F6;
+            background-color: #0000ff;
             color: white;
             transform: scale(1.1);
         }
@@ -213,9 +131,132 @@
             border-radius: 50%;
         }
 
+        h1 {
+            font-size: 24px; /* Adjusted for smaller screens */
+            color: #0000ff;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .section {
+            width: 100%; /* Full width on mobile */
+            margin-bottom: 20px;
+            padding: 20px;
+            border: 2px solid #0000ff;
+            border-radius: 20px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: 20px; /* Adjusted for smaller screens */
+            margin-bottom: 20px;
+            color: #0000ff;
+        }
+
+        .button-grid, .button-grid-wide {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .button-grid button, .button-grid-wide button {
+            width: 80px; /* Adjusted for smaller screens */
+            height: 80px; /* Adjusted for smaller screens */
+            padding: 10px;
+            border: 2px solid #0000ff;
+            border-radius: 20px;
+            background-color: white;
+            color: black;
+            font-size: 14px; /* Adjusted for smaller screens */
+            cursor: pointer;
+            box-sizing: border-box;
+            transition: transform 0.3s ease;
+        }
+
+        .button-grid button:hover, .button-grid-wide button:hover {
+            background-color: #0000ff;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .special-button {
+            width: 100px; /* Adjusted for smaller screens */
+            height: 100px; /* Adjusted for smaller screens */
+            padding: 10px;
+            border: 2px solid #0000ff;
+            border-radius: 30px;
+            background-color: white;
+            color: black;
+            font-size: 14px; /* Adjusted for smaller screens */
+            cursor: pointer;
+            box-sizing: border-box;
+            transition: transform 0.3s ease;
+        }
+
+        .special-button:hover {
+            background-color: #0000ff;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .menu-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: blue;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            z-index: 30; /* Ensures the menu button is on top */
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .menu-button:hover {
+            background-color: darkblue;
+            transform: scale(1.1);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .back-button {
+            background-color: white;
+            color: blue;
+            border: 2px solid blue;
+            padding: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: auto;
+        }
+
+        .back-button:hover {
+            background-color: blue;
+            color: white;
+        }
+
         @media (max-width: 600px) {
+            .sidebar {
+                width: 100%; /* Full width on mobile */
+                left: -100%; /* Fully hidden by default */
+            }
+
+            .sidebar.show {
+                left: 0;
+            }
+
             .main-content {
                 margin-left: 0; /* No margin on mobile */
+            }
+
+            .search-input {
+                width: 100%; /* Full width on mobile */
             }
 
             .section {
@@ -226,33 +267,15 @@
 </head>
 <body>
     <div class="sidebar" id="sidebar">
-        <button onclick="window.location.href='acc.html'">
-            <span class="icon">👤</span>
-            <span class="label">Account</span>
-        </button>
-        <button onclick="window.location.href='shop.html'">
-            <span class="icon">🛒</span>
-            <span class="label">My Shop</span>
-        </button>
-        <button class="active">
-            <span class="icon">🎁</span>
-            <span class="label">Loot</span>
-        </button>
-        <button onclick="window.location.href='explore.html'">
-            <span class="icon">🔍</span>
-            <span class="label">Explore</span>
-        </button>
-        <button onclick="window.location.href='rewards.html'">
-            <span class="icon">🏆</span>
-            <span class="label">Rewards</span>
-        </button>
-        <button class="dark-mode-toggle" onclick="toggleDarkMode()">
-            <span class="icon">🌙</span>
-            <span class="label">Dark Mode</span>
-        </button>
+        <button onclick="window.location.href='acc.html'">Account</button>
+        <button onclick="window.location.href='shop.html'">My Shop</button>
+        <button class="active">Loot</button>
+        <button onclick="window.location.href='explore.html'">Explore</button>
+        <button onclick="window.location.href='rewards.html'">Rewards</button>
+        <button class="back-button" onclick="toggleSidebar()">←</button>
     </div>
-    <button class="toggle-button" id="toggleButton" onclick="toggleSidebar()">⇔</button>
     <div class="main-content" id="main-content">
+        <button class="menu-button" id="menu-button" onclick="toggleSidebar()">☰</button>
         <div class="search-container">
             <input type="text" class="search-input" placeholder="Search...">
             <div class="search-icon">🔍</div>
@@ -282,16 +305,14 @@
         function toggleSidebar() {
             var sidebar = document.getElementById('sidebar');
             var mainContent = document.getElementById('main-content');
-            var toggleButton = document.getElementById('toggleButton');
-            sidebar.classList.toggle('narrow');
+            var menuButton = document.getElementById('menu-button');
+            sidebar.classList.toggle('show');
             mainContent.classList.toggle('shifted');
-            toggleButton.classList.toggle('shifted');
-        }
-
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
+            if (sidebar.classList.contains('show')) {
+                menuButton.classList.add('hidden');
+            } else {
+                menuButton.classList.remove('hidden');
+            }
         }
     </script>
-</body>
-</html>
-
+</
