@@ -3,99 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reels Interface</title>
+    <title>Explore - Apploot</title>
+    <link rel="icon" href="loot_logo.png" type="image/png">
     <style>
-        body, html {
+        body {
             margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #f0f0f0;
-            overflow: hidden;
+            font-family: Arial, sans-serif;
+            color: #0000ff;
+            background-color: #fff;
+            overflow-x: hidden; /* Prevent horizontal scroll */
         }
+
         .container {
-            width: 360px;
-            height: 640px;
-            border: 2px solid blue;
-            border-radius: 20px;
-            overflow: hidden;
-            position: relative;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            background-color: black;
+            height: 100vh;
         }
-        .video-container {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
-        video {
-            width: 100%;
-            height: auto;
-            max-height: 100%;
-        }
-        .controls {
-            display: flex;
-            justify-content: space-around;
-            width: 100%;
-            padding: 10px;
-            box-sizing: border-box;
-            position: absolute;
-            bottom: 0;
-            z-index: 10;
-        }
-        .controls button {
-            border: 2px solid blue;
-            border-radius: 10px;
-            padding: 10px 20px;
-            background-color: white;
-            font-size: 16px;
-            cursor: pointer;
-        }
+
         .sidebar {
-            background-color: white;
-            width: 300px;
+            background-color: blue;
+            width: 200px;
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
-            padding: 20px;
+            align-items: center;
+            padding: 20px 0;
             box-sizing: border-box;
             position: fixed;
-            left: -300px;
+            left: -200px; /* Hidden by default */
             top: 0;
             height: 100%;
             transition: left 0.3s ease;
-            z-index: 20;
+            z-index: 20; /* Ensures the sidebar is on top */
         }
+
         .sidebar.show {
             left: 0;
         }
+
         .sidebar button {
-            width: 100%;
-            background-color: transparent;
-            border: none;
-            padding: 15px;
-            display: flex;
-            align-items: center;
-            font-size: 18px;
+            width: 80%;
+            background-color: white;
+            border: 2px solid blue;
+            color: blue;
+            padding: 10px 20px;
             cursor: pointer;
-            border-bottom: 1px solid #e0e0e0;
-            text-align: left;
+            border-radius: 5px;
+            font-size: 16px;
+            margin: 10px 0;
+            text-align: center;
         }
-        .sidebar button.active, .sidebar button:hover {
-            background-color: rgb(82, 67, 247);
+
+        .sidebar button.active {
+            background-color: rgb(138, 135, 135);
+            color: black;
         }
-        .sidebar .icon {
-            margin-right: 10px;
+
+        .sidebar button:hover {
+            background-color: blue;
+            color: white;
         }
+
+        .user-section {
+            margin-top: auto;
+            padding: 15px;
+            background-color: #0000ff;
+            width: 100%;
+            text-align: center;
+            font-size: 16px;
+            color: #fff;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 20px;
+            margin-left: 200px; /* Adjusted for the sidebar */
+            transition: margin-left 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .main-content.shifted {
+            margin-left: 0;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
         .menu-button {
-            position: absolute;
+            position: fixed;
             top: 20px;
             left: 20px;
             background-color: blue;
@@ -105,14 +105,19 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
-            z-index: 30;
+            z-index: 30; /* Ensures the menu button is on top */
+            transition: background-color 0.3s ease, transform 0.3s ease;
         }
+
+        .menu-button:hover {
+            background-color: darkblue;
+            transform: scale(1.1);
+        }
+
         .menu-button.hidden {
             display: none;
         }
-        .menu-button:hover {
-            background-color: darkblue;
-        }
+
         .back-button {
             background-color: white;
             color: blue;
@@ -122,161 +127,195 @@
             cursor: pointer;
             font-size: 16px;
             margin-top: auto;
-            margin-bottom: 20px;
         }
+
         .back-button:hover {
             background-color: blue;
             color: white;
         }
+
+        .video-container {
+            width: 100%;
+            max-width: 500px;
+            margin: 20px 0;
+            position: relative;
+            cursor: pointer;
+        }
+
+        video {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            outline: none; /* Remove the outline */
+        }
+
+        .overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 0 0 10px 10px;
+            color: #ffffff;
+            display: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .video-container:hover .overlay {
+            display: block;
+        }
+
+        .overlay p {
+            margin: 5px 0;
+        }
+
+        .overlay a {
+            color: #0000ff;
+            text-decoration: none;
+            background-color: #ffffff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .overlay a:hover {
+            background-color: #ffffff;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 60%;
+                height: 100%;
+                position: fixed;
+                left: -100%;
+            }
+
+            .sidebar.show {
+                left: 0;
+            }
+
+            .sidebar button {
+                width: 90%;
+            }
+
+            .main-content {
+                margin-left: 0;
+                margin-top: 60px; /* Adjust for the menu button */
+            }
+
+            .menu-button {
+                top: 10px;
+                left: 10px;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="sidebar" id="sidebar">
-        <button onclick="window.location.href='acc.html'">
-            <span class="icon">👤</span>
-            <span class="label">Account</span>
-        </button>
-        <button onclick="window.location.href='shop.html'">
-            <span class="icon">🛒</span>
-            <span class="label">My Shop</span>
-        </button>
-        <button onclick="window.location.href='loot.html'">
-            <span class="icon">🎁</span>
-            <span class="label">Loot</span>
-        </button>
-        <button class="active" >
-            <span class="icon">🔍</span>
-            <span class="label">Explore</span>
-        </button>
-        <button onclick="window.location.href='rewards.html'">
-            <span class="icon">🏆</span>
-            <span class="label">Rewards</span>
-        </button>
-        <button class="dark-mode-toggle" onclick="toggleDarkMode()">
-            <span class="icon">🌙</span>
-            <span class="label">Dark Mode</span>
-        </button>
-        <button class="back-button" onclick="toggleSidebar()">←</button>
-    </div>
     <div class="container">
-        <button class="menu-button" id="menu-button" onclick="toggleSidebar()">></button>
-        <div id="video1" class="video-container" onclick="togglePlayPause('vid1')">
-            <video id="vid1" src="a.mp4" autoplay></video>
-            <div class="controls">
-                <button onclick="buy()">Buy</button>
-                <button onclick="like()">Like</button>
-            </div>
+        <div class="sidebar" id="sidebar">
+            <button onclick="window.location.href='acc.html'">Account</button>
+            <button onclick="window.location.href='shop.html'">My Shop</button>
+            <button onclick="window.location.href='loot.html'">Loot</button>
+            <button class="active" onclick="window.location.href='explore.html'">Explore</button>
+            <button onclick="window.location.href='rewards.html'">Rewards</button>
+            <button class="back-button" onclick="toggleSidebar()">←</button>
         </div>
-        <div id="video2" class="video-container" style="display: none;" onclick="togglePlayPause('vid2')">
-            <video id="vid2" src="b.mp4" autoplay></video>
-            <div class="controls">
-                <button onclick="buy()">Buy</button>
-                <button onclick="like()">Like</button>
-            </div>
-        </div>
-        <div id="video3" class="video-container" style="display: none;" onclick="togglePlayPause('vid3')">
-            <video id="vid3" src="c.mp4" autoplay></video>
-            <div class="controls">
-                <button onclick="buy()">Buy</button>
-                <button onclick="like()">Like</button>
-            </div>
-        </div>
-        <div id="video4" class="video-container" style="display: none;" onclick="togglePlayPause('vid4')">
-            <video id="vid4" src="d.mp4" autoplay></video>
-            <div class="controls">
-                <button onclick="buy()">Buy</button>
-                <button onclick="like()">Like</button>
-            </div>
+        <div class="main-content" id="content">
+            <button class="menu-button" id="menuButton" onclick="toggleSidebar()">☰</button>
+            <h1>Explore</h1>
+            <div id="reels-container"></div>
         </div>
     </div>
     <script>
-        let currentVideo = 1;
-
-        document.body.addEventListener('touchstart', handleTouchStart, false);
-        document.body.addEventListener('touchmove', handleTouchMove, false);
-
-        let xDown = null;
-        let yDown = null;
-
-        function getTouches(evt) {
-            return evt.touches || evt.originalEvent.touches;
-        }
-
-        function handleTouchStart(evt) {
-            const firstTouch = getTouches(evt)[0];
-            xDown = firstTouch.clientX;
-            yDown = firstTouch.clientY;
-        }
-
-        function handleTouchMove(evt) {
-            if (!xDown || !yDown) {
-                return;
-            }
-
-            const xUp = evt.touches[0].clientX;
-            const yUp = evt.touches[0].clientY;
-
-            const xDiff = xDown - xUp;
-            const yDiff = yDown - yUp;
-
-            if (Math.abs(xDiff) > Math.abs(yDiff)) {
-                return;
-            }
-
-            if (yDiff > 0) {
-                showNextVideo();
-            } else {
-                showPreviousVideo();
-            }
-
-            xDown = null;
-            yDown = null;
-        }
-
-        function showNextVideo() {
-            document.getElementById(`video${currentVideo}`).style.display = 'none';
-            document.getElementById(`vid${currentVideo}`).pause();
-            currentVideo = currentVideo < 4 ? currentVideo + 1 : 1;
-            document.getElementById(`video${currentVideo}`).style.display = 'flex';
-            document.getElementById(`vid${currentVideo}`).play();
-        }
-
-        function showPreviousVideo() {
-            document.getElementById(`video${currentVideo}`).style.display = 'none';
-            document.getElementById(`vid${currentVideo}`).pause();
-            currentVideo = currentVideo > 1 ? currentVideo - 1 : 4;
-            document.getElementById(`video${currentVideo}`).style.display = 'flex';
-            document.getElementById(`vid${currentVideo}`).play();
-        }
-
-        function togglePlayPause(videoId) {
-            const video = document.getElementById(videoId);
-            if (video.paused) {
-                video.play();
-            } else {
-                video.pause();
-            }
-        }
-
-        function buy() {
-            alert('Buy button clicked');
-        }
-
-        function like() {
-            alert('Like button clicked');
-        }
-
         function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const menuButton = document.getElementById('menu-button');
+            var sidebar = document.getElementById('sidebar');
+            var content = document.getElementById('content');
+            var menuButton = document.getElementById('menuButton');
             sidebar.classList.toggle('show');
+            content.classList.toggle('shifted');
             menuButton.classList.toggle('hidden');
         }
 
-        function toggleDarkMode() {
-            const body = document.body;
-            body.classList.toggle('dark-mode');
-        }
+        let currentPlayingVideo = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('reels-container');
+            container.addEventListener('click', (e) => {
+                if (e.target.tagName === 'VIDEO') {
+                    const clickedVideo = e.target;
+
+                    if (currentPlayingVideo && currentPlayingVideo !== clickedVideo) {
+                        currentPlayingVideo.pause();
+                    }
+
+                    if (clickedVideo.paused) {
+                        clickedVideo.play();
+                        currentPlayingVideo = clickedVideo;
+                    } else {
+                        clickedVideo.pause();
+                    }
+                }
+            });
+        });
+    </script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getDatabase, ref as dbRef, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyClf6W3B2nesvjfZtRSMcjbt6NRp6uy-Po",
+            authDomain: "lootbase-4d01f.firebaseapp.com",
+            projectId: "lootbase-4d01f",
+            storageBucket: "lootbase-4d01f.appspot.com",
+            messagingSenderId: "350264696657",
+            appId: "1:350264696657:web:9af597da2f5fd2970d7d70",
+            measurementId: "G-YQK38EMPJK"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase();
+
+        const productsRef = dbRef(db, 'Products');
+        onValue(productsRef, (snapshot) => {
+            const container = document.getElementById('reels-container');
+            container.innerHTML = ''; // Clear previous content
+
+            snapshot.forEach((childSnapshot) => {
+            const product = childSnapshot.val();
+            const productElement = document.createElement('div');
+            productElement.classList.add('video-container');
+
+            // Product name element
+            const productNameElement = document.createElement('strong');
+            productNameElement.textContent = product.name;
+
+            // Description element
+            const descriptionElement = document.createElement('p');
+            descriptionElement.textContent = product.description;
+
+            const videoElement = document.createElement('video');
+            videoElement.src = product.videoUrl;
+            videoElement.controls = false;
+            videoElement.setAttribute('playsinline', '');
+
+            const overlay = document.createElement('div');
+            overlay.classList.add('overlay');
+
+            const buyButton = document.createElement('a');
+            buyButton.href = product.link;
+            buyButton.textContent = 'Buy Now';
+            overlay.appendChild(productNameElement);
+            overlay.appendChild(descriptionElement);
+            overlay.appendChild(buyButton);
+
+            productElement.appendChild(videoElement);
+            productElement.appendChild(overlay);
+
+            container.appendChild(productElement);
+        });
+
+        });
     </script>
 </body>
 </html>
