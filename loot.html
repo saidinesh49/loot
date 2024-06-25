@@ -11,7 +11,7 @@
             color: #0000ff;
             background-color: #fff;
         }
-
+ 
         .container {
             display: flex;
             flex-direction: column;
@@ -83,7 +83,7 @@
         }
 
         .main-content.shifted {
-            margin-left: 0;
+            margin-left: 200px; /* Adjusted to match sidebar width */
         }
 
         .search-container {
@@ -139,7 +139,7 @@
         }
 
         .section {
-            width: 100%; /* Full width on mobile */
+            width: 80%; /* Full width on mobile */
             margin-bottom: 20px;
             padding: 20px;
             border: 2px solid #0000ff;
@@ -241,7 +241,49 @@
             color: white;
         }
 
+        .offer-card {
+            width: 100%;
+            max-width: 1300px;
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 2px solid #0000ff;
+            border-radius: 10px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .offer-card img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+
+        .offer-card-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .offer-card-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .offer-card-details {
+            font-size: 14px;
+        }
+
         @media (max-width: 600px) {
+            .section{
+             width: 100%;
+            }
+
             .sidebar {
                 width: 60%; /* Full width on mobile */
                 left: -100%; /* Fully hidden by default */
@@ -262,6 +304,10 @@
 
             .section {
                 width: 90%; /* Adjusted for smaller screens */
+            }
+
+            .offer-card {
+                width: 90%;
             }
         }
     </style>
@@ -284,36 +330,96 @@
         </div>
         <h1>Get Best rewards...</h1>
         <div class="section">
-            <div class="section-title">Offer Zone</div>
-            <div class="button-grid">
-                <button>Off 1</button>
-                <button>Off 2</button>
-                <button>Off 3</button>
-                <button>Off 4</button>
-                <button class="special-button">See More</button>
-            </div>
-        </div>
-        <div class="section">
-            <div class="button-grid-wide">
-                <button class="special-button">Media</button>
-                <button class="special-button">Study</button>
-                <button class="special-button">AI & Tech</button>
-                <button class="special-button">Products</button>
-            </div>
+            <div class="section-title">Offer Cards</div>
+            <!-- Placeholder for dynamically generated offer cards -->
+            <div id="offer-cards"></div>
         </div>
     </div>
-    <script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js"></script>
+    <script type="module">
+        // Firebase configuration
+        const firebaseConfig = {
+                apiKey: "AIzaSyClf6W3B2nesvjfZtRSMcjbt6NRp6uy-Po",
+                authDomain: "lootbase-4d01f.firebaseapp.com",
+                projectId: "lootbase-4d01f",
+                storageBucket: "lootbase-4d01f.appspot.com",
+                messagingSenderId: "34967195141",
+                appId: "1:34967195141:web:2e7dd3a63a1a99c04d407d",
+                measurementId: "G-MQVC5F7TLR"
+        };
+
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getDatabase, ref , onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        // Function to fetch offer cards data from Firebase
+        function fetchOfferCards() {
+            const offerCardsRef = ref(database, 'OfferCards');
+
+            onValue(offerCardsRef, (snapshot) => {
+                const offerCardsData = snapshot.val();
+
+                if (offerCardsData) {
+                    // Convert object to array for sorting
+                    const cardsArray = Object.values(offerCardsData);
+
+                    // Sort offer cards by offerPercentage (ascending)
+                    cardsArray.sort((a, b) => a.offerPercentage - b.offerPercentage);
+
+                    // Render sorted offer cards
+                    renderOfferCards(cardsArray);
+                } else {
+                    console.log('No offer cards data available.');
+                }
+            }, (error) => {
+                console.error('Error fetching offer cards:', error);
+            });
+        }
+
+        // Function to render offer cards
+        function renderOfferCards(cardsArray) {
+            const offerCardsContainer = document.getElementById('offer-cards');
+            offerCardsContainer.innerHTML = '';
+
+            cardsArray.forEach(card => {
+                const cardElement = document.createElement('div');
+                cardElement.classList.add('offer-card');
+
+                const imageElement = document.createElement('img');
+                imageElement.src = card.imageUrl;
+                cardElement.appendChild(imageElement);
+
+                const contentElement = document.createElement('div');
+                contentElement.classList.add('offer-card-content');
+
+                const titleElement = document.createElement('div');
+                titleElement.classList.add('offer-card-title');
+                titleElement.textContent = card.productName;
+                contentElement.appendChild(titleElement);
+
+                const detailsElement = document.createElement('div');
+                detailsElement.classList.add('offer-card-details');
+                detailsElement.textContent = `Offer: ${card.offerPercentage}%`;
+                contentElement.appendChild(detailsElement);
+
+                cardElement.appendChild(contentElement);
+                offerCardsContainer.appendChild(cardElement);
+            });
+        }
+
+        // Call fetchOfferCards function on page load
+        fetchOfferCards();
+
+        // Function to toggle sidebar
         function toggleSidebar() {
-            var sidebar = document.getElementById('sidebar');
-            var mainContent = document.getElementById('main-content');
-            var menuButton = document.getElementById('menu-button');
+            const sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('show');
+
+            const mainContent = document.getElementById('main-content');
             mainContent.classList.toggle('shifted');
-            if (sidebar.classList.contains('show')) {
-                menuButton.classList.add('hidden');
-            } else {
-                menuButton.classList.remove('hidden');
-            }
         }
     </script>
 </body>
