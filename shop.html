@@ -1,9 +1,13 @@
+
+
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shop-Apploot</title>
+    <title>Shop - Upload Offer</title>
     <link rel="icon" href="loot_logo.png" type="image/png">
     <style>
         body {
@@ -25,11 +29,11 @@
             padding: 20px 0;
             box-sizing: border-box;
             position: fixed;
-            left: -200px; /* Hidden by default */
+            left: -200px;
             top: 0;
             height: 100%;
             transition: left 0.3s ease;
-            z-index: 20; /* Ensures the sidebar is on top */
+            z-index: 20;
         }
 
         .sidebar.show {
@@ -67,9 +71,9 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            text-align: center; /* Center-align text */
-            color: blue; /* Text color to blue */
-            margin-left: 200px; /* Adjusted for the sidebar */
+            text-align: center;
+            color: blue;
+            margin-left: 0px;
             transition: margin-left 0.3s ease;
         }
 
@@ -79,44 +83,82 @@
 
         h1 {
             font-size: 36px;
-            color: blue; /* Ensure h1 color is blue */
+            color: blue;
         }
 
-        p {
-            font-size: 24px; /* Increase font size for the paragraph */
-            color: blue; /* Ensure p color is blue */
-            margin: 10px 0; /* Add some margin for spacing */
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
         }
 
-        .box {
+        .button-container button {
+            background-color: blue;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 20px;
+            margin: 10px 0;
+        }
+
+        .button-container button:hover {
+            background-color: darkblue;
+        }
+
+        .form-container {
             border: 2px solid blue;
             border-radius: 10px;
-            margin: 20px 0;
             padding: 20px;
+            width: 100%;
+            max-width: 500px;
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
+            margin-top: 20px;
+            display: none;
         }
 
-        .box h2 {
-            margin: 0;
+        .form-group {
+            margin: 10px 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
         }
 
-        .add-more-btn {
+        .form-group label {
+            margin-bottom: 5px;
+            font-size: 16px;
+        }
+
+        .form-group input {
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid blue;
+            border-radius: 5px;
+        }
+
+        .form-group input[type="file"] {
+            padding: 5px;
+        }
+
+        .submit-btn {
             background-color: white;
             border: 2px solid blue;
             color: blue;
-            padding: 20px 40px; /* Increased size */
+            padding: 10px 20px;
             cursor: pointer;
             border-radius: 5px;
-            font-size: 20px; /* Increased font size */
-            margin: 20px auto; /* Center align */
-            display: flex; /* Flexbox properties */
+            font-size: 20px;
+            margin-top: 20px;
+            display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        .add-more-btn:hover {
+        .submit-btn:hover {
             background-color: blue;
             color: white;
         }
@@ -132,9 +174,10 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
-            z-index: 30; /* Ensures the menu button is on top */
+            z-index: 30;
             transition: transform 0.3s ease;
         }
+
         .menu-button:hover {
             background-color: darkblue;
             transform: scale(1.1);
@@ -142,22 +185,6 @@
 
         .menu-button.hidden {
             display: none;
-        }
-
-        .back-button {
-            background-color: white;
-            color: blue;
-            border: 2px solid blue;
-            padding: 5px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: auto;
-        }
-
-        .back-button:hover {
-            background-color: blue;
-            color: white;
         }
 
         @media (max-width: 768px) {
@@ -179,11 +206,15 @@
                 font-size: 24px;
             }
 
-            p {
-                font-size: 18px;
+            .form-container {
+                padding: 10px;
             }
 
-            .add-more-btn {
+            .form-group input {
+                padding: 8px;
+            }
+
+            .submit-btn {
                 font-size: 16px;
                 padding: 10px 20px;
             }
@@ -201,7 +232,11 @@
                 padding: 8px 16px;
             }
 
-            .add-more-btn {
+            .form-group input {
+                font-size: 14px;
+            }
+
+            .submit-btn {
                 font-size: 14px;
                 padding: 8px 16px;
             }
@@ -209,13 +244,10 @@
             h1 {
                 font-size: 20px;
             }
-
-            p {
-                font-size: 16px;
-            }
         }
     </style>
 </head>
+
 <body>
     <div class="sidebar" id="sidebar">
         <button onclick="window.location.href='acc.html'">Account</button>
@@ -227,9 +259,30 @@
     </div>
     <div class="content" id="content">
         <button class="menu-button" id="menuButton" onclick="toggleSidebar()">☰</button>
-        <h1>No Products Listed</h1>
-        <p>Start selling...?</p>
-        <button onclick="window.location.href='shop2.html'" class="add-more-btn">Add More</button>
+        <h1>What do you want to add?</h1>
+        <div class="button-container">
+            <button onclick="showForm()">Add Offer+</button>
+            <button onclick="window.location.href='shop2.html'">Add Product+</button>
+        </div>
+        <div class="form-container" id="formContainer">
+            <div class="form-group">
+                <label for="productName">Product Name:</label>
+                <input type="text" id="productName" placeholder="Enter product name">
+            </div>
+            <div class="form-group">
+                <label for="productImage">Upload Image:</label>
+                <input type="file" id="productImage">
+            </div>
+            <div class="form-group">
+                <label for="productLink">Product Link:</label>
+                <input type="text" id="productLink" placeholder="Enter product link">
+            </div>
+            <div class="form-group">
+                <label for="offerPercentage">Offer Percentage:</label>
+                <input type="number" id="offerPercentage" placeholder="Enter offer percentage">
+            </div>
+            <button class="submit-btn" onclick="uploadProduct()">Submit</button>
+        </div>
     </div>
     <script>
         function toggleSidebar() {
@@ -240,6 +293,68 @@
             content.classList.toggle('shifted');
             menuButton.classList.toggle('hidden');
         }
+
+        function showForm() {
+            document.getElementById('formContainer').style.display = 'flex';
+            document.querySelector('.button-container').style.display = 'none';
+        }
+
+        function uploadProduct() {
+            const productName = document.getElementById('productName').value;
+            const productImage = document.getElementById('productImage').files[0];
+            const productLink = document.getElementById('productLink').value;
+            const offerPercentage = document.getElementById('offerPercentage').value;
+
+            if (!productName || !productImage || !productLink || !offerPercentage || offerPercentage>99 || offerPercentage<0) {
+                alert('Please fill all fields.');
+                return;
+            }
+
+            // Initialize Firebase
+            const firebaseConfig = {
+                apiKey: "AIzaSyClf6W3B2nesvjfZtRSMcjbt6NRp6uy-Po",
+                authDomain: "lootbase-4d01f.firebaseapp.com",
+                projectId: "lootbase-4d01f",
+                storageBucket: "lootbase-4d01f.appspot.com",
+                messagingSenderId: "34967195141",
+                appId: "1:34967195141:web:2e7dd3a63a1a99c04d407d",
+                measurementId: "G-MQVC5F7TLR"
+            };
+            firebase.initializeApp(firebaseConfig);
+            const storage = firebase.storage();
+            const database = firebase.database();
+
+            const storageRef = storage.ref();
+            const productImageRef = storageRef.child('productImages/' + productImage.name);
+
+            productImageRef.put(productImage).then((snapshot) => {
+                snapshot.ref.getDownloadURL().then((downloadURL) => {
+                    const newProductRef = database.ref('OfferCards').push();
+                    newProductRef.set({
+                        productName: productName,
+                        imageUrl: downloadURL,
+                        link: productLink,
+                        offer: offerPercentage + '%'
+                    }).then(() => {
+                        alert('Product uploaded successfully.');
+                    }).catch((error) => {
+                        console.error('Error uploading product:', error);
+                        alert('Error uploading product. Please try again.');
+                    });
+                }).catch((error) => {
+                    console.error('Error getting download URL:', error);
+                    alert('Error getting download URL. Please try again.');
+                });
+            }).catch((error) => {
+                console.error('Error uploading image:', error);
+                alert('Error uploading image. Please try again.');
+            });
+        }
     </script>
+    <!-- Add Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-storage.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
 </body>
+
 </html>
