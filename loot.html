@@ -279,6 +279,15 @@
             font-size: 14px;
         }
 
+        .offer-card-button {
+            color: #ffffff;
+            text-decoration: none;
+            background-color: #0000ff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
         @media (max-width: 600px) {
             .section{
              width: 100%;
@@ -311,30 +320,6 @@
             }
         }
     </style>
-</head>
-<body>
-    <div class="sidebar" id="sidebar">
-        <button onclick="window.location.href='acc.html'">Account</button>
-        <button onclick="window.location.href='shop.html'">My Shop</button>
-        <button class="active">Loot</button>
-        <button onclick="window.location.href='explore.html'">Explore</button>
-        <button onclick="window.location.href='rewards.html'">Rewards</button>
-        <button class="back-button" onclick="toggleSidebar()">←</button>
-    </div>
-    <div class="main-content" id="main-content">
-        <button class="menu-button" id="menu-button" onclick="toggleSidebar()">☰</button>
-        <div class="search-container">
-            <input type="text" class="search-input" placeholder="Search...">
-            <div class="search-icon">🔍</div>
-            <div class="profile-icon">👤</div>
-        </div>
-        <h1>Get Best rewards...</h1>
-        <div class="section">
-            <div class="section-title">Offer Cards</div>
-            <!-- Placeholder for dynamically generated offer cards -->
-            <div id="offer-cards"></div>
-        </div>
-    </div>
     <script type="module" src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
     <script type="module" src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js"></script>
     <script type="module">
@@ -356,28 +341,29 @@
         const database = getDatabase(app);
 
         // Function to fetch offer cards data from Firebase
-        function fetchOfferCards() {
-            const offerCardsRef = ref(database, 'OfferCards');
+// Function to fetch offer cards data from Firebase
+function fetchOfferCards() {
+    const offerCardsRef = ref(database, 'OfferCards');
 
-            onValue(offerCardsRef, (snapshot) => {
-                const offerCardsData = snapshot.val();
+    onValue(offerCardsRef, (snapshot) => {
+        const offerCardsData = snapshot.val();
 
-                if (offerCardsData) {
-                    // Convert object to array for sorting
-                    const cardsArray = Object.values(offerCardsData);
+        if (offerCardsData) {
+            // Convert object to array for sorting
+            const cardsArray = Object.values(offerCardsData);
 
-                    // Sort offer cards by offerPercentage (ascending)
-                    cardsArray.sort((a, b) => a.offerPercentage - b.offerPercentage);
+            // Sort offer cards by offerPercentage (descending)
+            cardsArray.sort((a, b) => b.offer - a.offer);
 
-                    // Render sorted offer cards
-                    renderOfferCards(cardsArray);
-                } else {
-                    console.log('No offer cards data available.');
-                }
-            }, (error) => {
-                console.error('Error fetching offer cards:', error);
-            });
+            // Render sorted offer cards
+            renderOfferCards(cardsArray);
+        } else {
+            console.log('No offer cards data available.');
         }
+    }, (error) => {
+        console.error('Error fetching offer cards:', error);
+    });
+}
 
         // Function to render offer cards
         function renderOfferCards(cardsArray) {
@@ -402,8 +388,14 @@
 
                 const detailsElement = document.createElement('div');
                 detailsElement.classList.add('offer-card-details');
-                detailsElement.textContent = `Offer: ${card.offerPercentage}%`;
+                detailsElement.textContent = `Offer: ${card.offer}%`;
                 contentElement.appendChild(detailsElement);
+
+                const buyButton = document.createElement('a');
+                buyButton.classList.add('offer-card-button');
+                buyButton.href = card.link;
+                buyButton.textContent = 'Buy Now';
+                contentElement.appendChild(buyButton);
 
                 cardElement.appendChild(contentElement);
                 offerCardsContainer.appendChild(cardElement);
@@ -414,13 +406,50 @@
         fetchOfferCards();
 
         // Function to toggle sidebar
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            sidebar.classList.toggle('show');
-
-            const mainContent = document.getElementById('main-content');
-            mainContent.classList.toggle('shifted');
-        }
     </script>
+    <script>
+        function toggleSidebar() {
+        var sidebar = document.getElementById('sidebar');
+        var content = document.getElementById('content');
+        var menuButton = document.getElementById('menuButton');
+        menuButton.style.display='none';
+        sidebar.classList.toggle('show');
+        content.classList.toggle('shifted');
+    }
+
+    function noSidebar() {
+        var sidebar = document.getElementById('sidebar');
+        var content = document.getElementById('content');
+        var menuButton = document.getElementById('menuButton');
+        menuButton.style.display='';
+        sidebar.classList.toggle('show');
+        content.classList.toggle('shifted');
+    }
+
+    </script>
+</head>
+<body>
+    <div class="sidebar" id="sidebar">
+        <button onclick="window.location.href='acc.html'">Account</button>
+        <button onclick="window.location.href='shop.html'">My Shop</button>
+        <button class="active">Loot</button>
+        <button onclick="window.location.href='explore.html'">Explore</button>
+        <button onclick="window.location.href='rewards.html'">Rewards</button>
+        <button class="back-button" onclick="noSidebar()">←</button>
+    </div>
+    <div class="main-content" id="main-content">
+        <button class="menu-button" id="menuButton" onclick="toggleSidebar()">☰</button>
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Search...">
+            <div class="search-icon">🔍</div>
+            <div class="profile-icon">👤</div>
+        </div>
+        <h1>Get Best rewards...</h1>
+        <div class="section">
+            <div class="section-title">Offer Cards</div>
+            <!-- Placeholder for dynamically generated offer cards -->
+            <div id="offer-cards"></div>
+        </div>
+    </div>
 </body>
 </html>
