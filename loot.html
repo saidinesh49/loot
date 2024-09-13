@@ -4,34 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lootpage</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <style>
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            color: #0000ff;
-            background-color: #fff;
-        }
- 
-        .container {
+            background-color: black; /* Dark background */
+            color: #e0e0e0; /* Light text color */
             display: flex;
             flex-direction: column;
-            height: 100vh;
+            min-height: 100vh;
         }
 
         .sidebar {
-            background-color: blue;
-            width: 200px;
+            background-color: #1e1e1e; /* Darker background for sidebar */
+            width: 250px;
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 20px 0;
-            box-sizing: border-box;
             position: fixed;
-            left: -200px; /* Hidden by default */
+            left: -250px; /* Hidden by default */
             top: 0;
             height: 100%;
             transition: left 0.3s ease;
-            z-index: 20; /* Ensures the sidebar is on top */
+            z-index: 20;
         }
 
         .sidebar.show {
@@ -40,25 +37,49 @@
 
         .sidebar button {
             width: 80%;
-            background-color: white;
-            border: 2px solid blue;
-            color: blue;
-            padding: 10px 20px;
+            background: none;
+            border: none;
+            color: #e0e0e0;
+            padding: 12px 20px;
             cursor: pointer;
-            border-radius: 5px;
-            font-size: 16px;
+            border-radius: 8px;
+            font-size: 18px;
             margin: 10px 0;
-            text-align: center;
+            text-align: left;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar button i {
+            margin-right: 10px;
+            font-size: 24px;
         }
 
         .sidebar button.active {
-            background-color: rgb(138, 135, 135);
-            color: black;
-        }
+        background-color: #c693c3; /* Calm violet for active state */
+        color: #ffffff; /* White text */
+        border: 2px solid #a05d92; /* Darker violet border */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); /* Shadow for prominence */
+    }
+
+    .sidebar button.active i {
+        color: #ffffff; /* Ensure icon color matches text */
+    }
 
         .sidebar button:hover {
-            background-color: blue;
-            color: white;
+            color: black;
+            background-color: #856d95; /* Light violet on hover */
+        }
+
+        .sidebar button:hover i {
+            color: black; /* Light violet for icon on hover */
+        }
+ 
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
         }
 
         .user-section {
@@ -109,8 +130,9 @@
         .search-icon, .profile-icon {
             width: 40px;
             height: 40px;
-            background-color: white;
+            background-color: rgb(0, 0, 0);
             border: 2px solid rgb(0, 0, 0);
+            color: #a05d92;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -122,8 +144,7 @@
         }
 
         .search-icon:hover, .profile-icon:hover {
-            background-color: #0000ff;
-            color: white;
+            color: #ca9bc0;
             transform: scale(1.1);
         }
 
@@ -133,7 +154,7 @@
 
         h1 {
             font-size: 24px; /* Adjusted for smaller screens */
-            color: #0000ff;
+            color: #dfdcdc;
             margin-bottom: 20px;
             text-align: center;
         }
@@ -142,7 +163,7 @@
             width: 80%; /* Full width on mobile */
             margin-bottom: 20px;
             padding: 20px;
-            border: 2px solid #0000ff;
+            border: 2px solid #a05d92;
             border-radius: 20px;
             box-sizing: border-box;
             text-align: center;
@@ -151,7 +172,7 @@
         .section-title {
             font-size: 20px; /* Adjusted for smaller screens */
             margin-bottom: 20px;
-            color: #0000ff;
+            color: #dfdcdc;
         }
 
         .button-grid, .button-grid-wide {
@@ -202,23 +223,55 @@
         }
 
         .menu-button {
-            position: absolute;
+            position: fixed;
             top: 20px;
             left: 20px;
-            background-color: blue;
-            color: white;
+            background-color: #4b3758e1; /* Black background */
+            color: #ffffff; /* White text */
             border: none;
-            padding: 10px;
-            border-radius: 5px;
+            padding: 12px;
+            border-radius: 8px; /* Rounded corners */
             cursor: pointer;
-            font-size: 16px;
-            z-index: 30; /* Ensures the menu button is on top */
-            transition: background-color 0.3s ease, transform 0.3s ease;
+            font-size: 24px;
+            z-index: 30;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+        }
+
+        .menu-button .hamburger {
+            width: 24px;
+            height: 24px;
+            position: relative;
+        }
+
+        .menu-button .hamburger div {
+            width: 24px;
+            height: 3px;
+            background-color: #ffffff; /* White color for the lines */
+            position: absolute;
+            left: 0;
+            transition: all 0.3s ease;
+        }
+
+        .menu-button .hamburger div:nth-child(1) {
+            top: 0;
+        }
+
+        .menu-button .hamburger div:nth-child(2) {
+            top: 10px;
+        }
+
+        .menu-button .hamburger div:nth-child(3) {
+            top: 20px;
         }
 
         .menu-button:hover {
-            background-color: darkblue;
-            transform: scale(1.1);
+            background-color: #2d2c2c; /* Blue accent color */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+        }
+
+        .menu-button.hidden {
+            display: none;
         }
 
         .hidden {
@@ -246,7 +299,7 @@
             max-width: 1300px;
             margin-bottom: 20px;
             padding: 15px;
-            border: 2px solid #0000ff;
+            border: 2px solid #a05d92;
             border-radius: 10px;
             box-sizing: border-box;
             display: flex;
@@ -294,8 +347,8 @@
             }
 
             .sidebar {
-                width: 60%; /* Full width on mobile */
-                left: -100%; /* Fully hidden by default */
+                width: 100%;
+                left: -100%;
             }
 
             .sidebar.show {
@@ -409,13 +462,14 @@ function fetchOfferCards() {
     </script>
     <script>
         function toggleSidebar() {
-        var sidebar = document.getElementById('sidebar');
-        var content = document.getElementById('content');
-        var menuButton = document.getElementById('menuButton');
-        menuButton.style.display='none';
-        sidebar.classList.toggle('show');
-        content.classList.toggle('shifted');
-    }
+            const sidebar = document.getElementById('sidebar');
+            const content = document.getElementById('content');
+            const menuButton = document.getElementById('menuButton');
+
+            sidebar.classList.toggle('show');
+            content.classList.toggle('shrink');
+            menuButton.classList.toggle('hidden');
+        }
 
     function noSidebar() {
         var sidebar = document.getElementById('sidebar');
@@ -430,19 +484,31 @@ function fetchOfferCards() {
 </head>
 <body>
     <div class="sidebar" id="sidebar">
-        <button onclick="window.location.href='acc.html'">Account</button>
-        <button onclick="window.location.href='shop.html'">My Shop</button>
-        <button class="active">Loot</button>
-        <button onclick="window.location.href='explore.html'">Explore</button>
-        <button onclick="window.location.href='rewards.html'">Rewards</button>
-        <button class="back-button" onclick="noSidebar()">←</button>
+        <button onclick="window.location.href='dashboard.html'"><i class="material-icons">dashboard</i> Dashboard</button>
+        <button onclick="window.location.href='acc.html'"><i class="material-icons">account_circle</i> Account</button>
+        <button onclick="window.location.href='shop.html'"><i class="material-icons">shopping_bag</i> My Shop</button>
+        <button style="color:black; background-color: #c693c3;"><i class="material-icons">loyalty</i> Loot</button>
+        <button onclick="window.location.href='explore.html'"><i class="material-icons">explore</i> Explore</button>
+        <button onclick="window.location.href='rewards.html'"><i class="material-icons">redeem</i> Rewards</button>
+        <button class="back-button" onclick="toggleSidebar()">←</button>
     </div>
-    <div class="main-content" id="main-content">
-        <button class="menu-button" id="menuButton" onclick="toggleSidebar()">☰</button>
+    <div class="main-content" id="content">
+        <button class="menu-button" id="menuButton" onclick="toggleSidebar()">
+            <!-- Refined Hamburger Icon -->
+            <div class="hamburger">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </button>
         <div class="search-container">
             <input type="text" class="search-input" placeholder="Search...">
-            <div class="search-icon">🔍</div>
-            <div class="profile-icon">👤</div>
+            <div class="search-icon">
+                <span class="material-icons">search</span>
+            </div>
+            <div class="profile-icon">
+                <span class="material-icons">person</span>
+            </div>            
         </div>
         <h1>Get Best rewards...</h1>
         <div class="section">

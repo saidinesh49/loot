@@ -5,35 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Explore - Apploot</title>
     <link rel="icon" href="loot_logo.png" type="image/png">
+    <!-- Material Icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <style>
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            color: #0000ff;
-            background-color: #fff;
-            overflow-x: hidden; /* Prevent horizontal scroll */
-        }
-
-        .container {
+            background-color: black; /* Dark background */
+            color: #e0e0e0; /* Light text color */
             display: flex;
             flex-direction: column;
-            height: 100vh;
+            min-height: 100vh;
         }
 
         .sidebar {
-            background-color: blue;
-            width: 200px;
+            background-color: #1e1e1e; /* Darker background for sidebar */
+            width: 250px;
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 20px 0;
-            box-sizing: border-box;
             position: fixed;
-            left: -200px; /* Hidden by default */
+            left: -250px; /* Hidden by default */
             top: 0;
             height: 100%;
             transition: left 0.3s ease;
-            z-index: 20; /* Ensures the sidebar is on top */
+            z-index: 20;
         }
 
         .sidebar.show {
@@ -42,121 +39,91 @@
 
         .sidebar button {
             width: 80%;
-            background-color: white;
-            border: 2px solid blue;
-            color: blue;
-            padding: 10px 20px;
+            background: none;
+            border: none;
+            color: #e0e0e0;
+            padding: 12px 20px;
             cursor: pointer;
-            border-radius: 5px;
-            font-size: 16px;
+            border-radius: 8px;
+            font-size: 18px;
             margin: 10px 0;
-            text-align: center;
+            text-align: left;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar button i {
+            margin-right: 10px;
+            font-size: 24px;
         }
 
         .sidebar button.active {
-            background-color: rgb(138, 135, 135);
-            color: black;
+            background-color: #c693c3; /* Calm violet for active state */
+            color: black; /* Dark text */
+            border: 2px solid #a05d92; /* Darker violet border */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); /* Shadow for prominence */
+        }
+
+        .sidebar button.active i {
+            color: black; /* Ensure icon color matches text */
         }
 
         .sidebar button:hover {
-            background-color: blue;
-            color: white;
+            color: black;
+            background-color: #856d95; /* Light violet on hover */
         }
 
-        .user-section {
-            margin-top: auto;
-            padding: 15px;
-            background-color: #0000ff;
-            width: 100%;
-            text-align: center;
-            font-size: 16px;
-            color: #fff;
+        .sidebar button:hover i {
+            color: black; /* Light violet for icon on hover */
         }
 
-        .main-content {
+        .content {
             flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: center;
             padding: 20px;
-            margin-left: 200px; /* Adjusted for the sidebar */
+            box-sizing: border-box;
+            margin-left: 0;
             transition: margin-left 0.3s ease;
-            overflow-y: auto;
         }
 
-        .main-content.shifted {
-            margin-left: 0;
+        .content.shrink {
+            margin-left: 250px; /* Sidebar width */
         }
 
         h1 {
-            font-size: 24px;
+            font-size: 36px;
+            color: #ffffff; /* White text */
             margin-bottom: 20px;
-        }
-
-        .menu-button {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background-color: blue;
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            z-index: 30; /* Ensures the menu button is on top */
-            transition: background-color 0.3s ease, transform 0.3s ease;
-        }
-
-        .menu-button:hover {
-            background-color: darkblue;
-            transform: scale(1.1);
-        }
-
-        .menu-button.hidden {
-            display: none;
-        }
-
-        .back-button {
-            background-color: white;
-            color: blue;
-            border: 2px solid blue;
-            padding: 5px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: auto;
-        }
-
-        .back-button:hover {
-            background-color: blue;
-            color: white;
+            text-align: center;
         }
 
         #reels-container {
-        scroll-snap-type: y mandatory;
-        height: 100vh; /* Ensures it takes up full viewport height */
-        overflow-y: auto; /* Enable scrolling */
-        scrollbar-width: none;  /* Firefox */
-    }
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            overflow-y: auto; /* Enable vertical scrolling */
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
 
         .video-container {
             width: 100%;
-            max-width: 500px;
-            margin: 20px 0;
+            max-width: 600px;
+            margin: 10px 0;
             position: relative;
-            cursor: pointer;
-            scroll-snap-align: center; /* Adjust this to start or end if needed */
-            scrollbar-width: none;  /* Firefox */
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+            display: flex; /* Flexbox to align child elements */
+            justify-content: center; /* Center the video horizontally */
         }
-
 
         video {
             width: 100%;
-            height: auto;
-            border-radius: 10px;
-            outline: none; /* Remove the outline */
+            height: auto; /* Maintain aspect ratio */
+            border-radius: 16px;
+            object-fit: cover; /* Ensure the video covers the container */
         }
 
         .overlay {
@@ -164,40 +131,91 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(0, 0, 0, 0.6);
             padding: 10px;
-            border-radius: 0 0 10px 10px;
-            color: #ffffff;
-            display: none;
+            color: #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0;
             transition: opacity 0.3s ease;
         }
 
         .video-container:hover .overlay {
-            display: block;
+            opacity: 1;
+        }
+
+        .overlay strong {
+            font-size: 18px;
+            margin-bottom: 5px;
         }
 
         .overlay p {
             margin: 5px 0;
+            text-align: center;
         }
 
         .overlay a {
-            color: #0000ff;
+            color: #e0e0e0;
             text-decoration: none;
-            background-color: #ffffff;
+            background-color: #a05d92; /* Violet button color */
             padding: 5px 10px;
             border-radius: 5px;
             font-weight: bold;
+            transition: background-color 0.3s ease;
         }
 
         .overlay a:hover {
-            background-color: #ffffff;
+            background-color: #856d95; /* Darker shade on hover */
+        }
+
+        .menu-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background-color: #4b3758e1; /* Black background */
+            color: #ffffff; /* White text */
+            border: none;
+            padding: 12px;
+            border-radius: 8px; /* Rounded corners */
+            cursor: pointer;
+            font-size: 24px;
+            z-index: 30; /* Ensure it is above other elements */
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+        }
+
+        .menu-button:hover {
+            background-color: #2d2c2c; /* Darker shade on hover */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+        }
+
+        .menu-button.hidden {
+            display: none;
+        }
+
+        .back-button {
+            background-color: #000000; /* Black background */
+            color: #ffffff; /* White text */
+            border: none;
+            padding: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 24px;
+            margin-top: auto;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+        }
+
+        .back-button:hover {
+            background-color: #575dfb; /* Blue accent color */
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
         }
 
         @media (max-width: 768px) {
             .sidebar {
-                width: 60%;
-                height: 100%;
-                position: fixed;
+                width: 100%;
                 left: -100%;
             }
 
@@ -205,77 +223,118 @@
                 left: 0;
             }
 
-            .sidebar button {
-                width: 90%;
+            .content {
+                margin-left: 0;
+                padding: 10px;
             }
 
-            .main-content {
+            .content.shrink {
                 margin-left: 0;
-                margin-top: 60px; /* Adjust for the menu button */
             }
 
             .menu-button {
                 top: 10px;
                 left: 10px;
             }
+
+            h1 {
+                font-size: 28px;
+            }
+        }
+
+        .menu-button .hamburger {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 24px;
+            height: 16px;
+        }
+
+        .menu-button .hamburger div {
+            background-color: #ffffff; /* White color for lines */
+            height: 3px;
+            width: 100%;
+            border-radius: 3px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="sidebar" id="sidebar">
-            <button onclick="window.location.href='acc.html'">Account</button>
-            <button onclick="window.location.href='shop.html'">My Shop</button>
-            <button onclick="window.location.href='loot.html'">Loot</button>
-            <button class="active" onclick="window.location.href='explore.html'">Explore</button>
-            <button onclick="window.location.href='rewards.html'">Rewards</button>
-            <button class="back-button" onclick="toggleSidebar()">←</button>
-        </div>
-        <div class="main-content" id="content">
-            <button class="menu-button" id="menuButton" onclick="toggleSidebar()">☰</button>
-            <h1>Explore</h1>
-            <div id="reels-container"></div>
-        </div>
+    <div class="sidebar" id="sidebar">
+        <button onclick="window.location.href='dashboard.html'"><i class="material-icons">dashboard</i> Dashboard</button>
+        <button onclick="window.location.href='account.html'"><i class="material-icons">account_circle</i> Account</button>
+        <button onclick="window.location.href='shop.html'"><i class="material-icons">shopping_bag</i> My Shop</button>
+        <button onclick="window.location.href='loot.html'"><i class="material-icons">loyalty</i> Loot</button>
+        <button class="active" style="color:black; background-color: #c693c3;"><i class="material-icons">explore</i> Explore</button>
+        <button onclick="window.location.href='rewards.html'"><i class="material-icons">redeem</i> Rewards</button>
+        <button class="back-button" onclick="toggleSidebar()">←</button>
+    </div>
+    <div class="content" id="content">
+        <button class="menu-button" id="menuButton" onclick="toggleSidebar()">
+            <div class="hamburger">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </button>
+        <h1>Explore</h1>
+        <div id="reels-container"></div>
     </div>
     <script>
+        let currentPlayingVideo = null;
+
         function toggleSidebar() {
-            var sidebar = document.getElementById('sidebar');
-            var content = document.getElementById('content');
-            var menuButton = document.getElementById('menuButton');
+            const sidebar = document.getElementById('sidebar');
+            const content = document.getElementById('content');
+            const menuButton = document.getElementById('menuButton');
+
             sidebar.classList.toggle('show');
-            content.classList.toggle('shifted');
+            content.classList.toggle('shrink');
             menuButton.classList.toggle('hidden');
         }
 
-        let currentPlayingVideo = null;
-
         document.addEventListener('DOMContentLoaded', () => {
-        const container = document.getElementById('reels-container');
+            const container = document.getElementById('reels-container');
 
-        container.addEventListener('click', (e) => {
-            if (e.target.tagName === 'VIDEO') {
-                const clickedVideo = e.target;
+            container.addEventListener('click', (e) => {
+                if (e.target.tagName === 'VIDEO') {
+                    const clickedVideo = e.target;
 
-                // Scroll to the clicked video's position
-                container.scrollTo({
-                    top: clickedVideo.offsetTop,
-                    behavior: 'smooth'  // Optional: Smooth scrolling
-                });
+                    // Scroll to the clicked video's position
+                    container.scrollTo({
+                        top: clickedVideo.offsetTop,
+                        behavior: 'smooth'  // Optional: Smooth scrolling
+                    });
 
-                // Play or pause the video
-                if (currentPlayingVideo && currentPlayingVideo !== clickedVideo) {
-                    currentPlayingVideo.pause();
+                    // Play or pause the video
+                    if (currentPlayingVideo && currentPlayingVideo !== clickedVideo) {
+                        currentPlayingVideo.pause();
+                    }
+                    if (clickedVideo.paused) {
+                        clickedVideo.play();
+                        currentPlayingVideo = clickedVideo;
+                    } else {
+                        clickedVideo.pause();
+                    }
                 }
-                if (clickedVideo.paused) {
-                    clickedVideo.play();
-                    currentPlayingVideo = clickedVideo;
-                } else {
-                    clickedVideo.pause();
-                }
-            }
+            });
         });
-    });
 
+        // Function to highlight the active menu item
+        function highlightActiveMenuItem() {
+            const buttons = document.querySelectorAll('.sidebar button');
+            const currentPage = window.location.href.split('/').pop().replace('.html', '');
+
+            buttons.forEach(button => {
+                const buttonId = button.textContent.trim().toLowerCase();
+                if (currentPage === buttonId) {
+                    button.classList.add('active');
+                } else {
+                    button.classList.remove('active');
+                }
+            });
+        }
+
+        highlightActiveMenuItem();
     </script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -300,39 +359,38 @@
             container.innerHTML = ''; // Clear previous content
 
             snapshot.forEach((childSnapshot) => {
-            const product = childSnapshot.val();
-            const productElement = document.createElement('div');
-            productElement.classList.add('video-container');
+                const product = childSnapshot.val();
+                const productElement = document.createElement('div');
+                productElement.classList.add('video-container');
 
-            // Product name element
-            const productNameElement = document.createElement('strong');
-            productNameElement.textContent = product.name;
+                // Product name element
+                const productNameElement = document.createElement('strong');
+                productNameElement.textContent = product.name;
 
-            // Description element
-            const descriptionElement = document.createElement('p');
-            descriptionElement.textContent = product.description;
+                // Description element
+                const descriptionElement = document.createElement('p');
+                descriptionElement.textContent = product.description;
 
-            const videoElement = document.createElement('video');
-            videoElement.src = product.videoUrl;
-            videoElement.controls = false;
-            videoElement.setAttribute('playsinline', '');
+                const videoElement = document.createElement('video');
+                videoElement.src = product.videoUrl;
+                videoElement.controls = false;
+                videoElement.setAttribute('playsinline', '');
 
-            const overlay = document.createElement('div');
-            overlay.classList.add('overlay');
+                const overlay = document.createElement('div');
+                overlay.classList.add('overlay');
 
-            const buyButton = document.createElement('a');
-            buyButton.href = product.link;
-            buyButton.textContent = 'Buy Now';
-            overlay.appendChild(productNameElement);
-            overlay.appendChild(descriptionElement);
-            overlay.appendChild(buyButton);
+                const buyButton = document.createElement('a');
+                buyButton.href = product.link;
+                buyButton.textContent = 'Buy Now';
+                overlay.appendChild(productNameElement);
+                overlay.appendChild(descriptionElement);
+                overlay.appendChild(buyButton);
 
-            productElement.appendChild(videoElement);
-            productElement.appendChild(overlay);
+                productElement.appendChild(videoElement);
+                productElement.appendChild(overlay);
 
-            container.appendChild(productElement);
-        });
-
+                container.appendChild(productElement);
+            });
         });
     </script>
 </body>
