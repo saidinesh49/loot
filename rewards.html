@@ -3,218 +3,302 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shop-Apploot</title>
+    <title>Rewards</title>
     <link rel="icon" href="loot_logo.png" type="image/png">
+    <!-- Material Icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <style>
         body {
             margin: 0;
             font-family: Arial, sans-serif;
+            background-color: black; /* Dark background */
+            color: #e0e0e0; /* Light text color */
             display: flex;
-            height: 100vh;
-            background-color: #F3F4F6; /* Light background color */
-            color: #1F2937; /* Dark gray color for text */
-            transition: background-color 0.3s, color 0.3s;
-        }
-
-        body.dark-mode {
-            background-color: #1F2937; /* Dark background color */
-            color: #F3F4F6; /* Light color for text */
+            flex-direction: column;
+            min-height: 100vh;
         }
 
         .sidebar {
-            background-color: #FFFFFF; /* White background for sidebar */
-            width: 250px; /* Expanded width */
+            background-color: #1e1e1e; /* Darker background for sidebar */
+            width: 250px;
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 20px 0;
-            box-sizing: border-box;
             position: fixed;
+            left: -250px; /* Hidden by default */
             top: 0;
             height: 100%;
-            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-            z-index: 10; /* Ensure it is above the content */
-            transition: width 0.3s;
+            transition: left 0.3s ease;
+            z-index: 20;
         }
 
-        .sidebar.narrow {
-            width: 80px; /* Narrow width */
+        .sidebar.show {
+            left: 0;
         }
 
-        .sidebar button, .sidebar .dark-mode-toggle {
-            width: 100%;
-            background-color: transparent;
+        .sidebar button {
+            width: 80%;
+            background: none;
             border: none;
-            color: #6B7280; /* Gray color for icons */
-            padding: 15px 20px;
+            color: #e0e0e0;
+            padding: 12px 20px;
             cursor: pointer;
-            font-size: 18px; /* Icon size */
+            border-radius: 8px;
+            font-size: 18px;
+            margin: 10px 0;
             text-align: left;
-            transition: background-color 0.2s, color 0.2s; /* Smooth color transition */
+            transition: background-color 0.3s ease, color 0.3s ease;
             display: flex;
             align-items: center;
         }
 
-        .sidebar button:hover, .sidebar .dark-mode-toggle:hover {
-            background-color: #E5E7EB; /* Light gray on hover */
-            color: #1F2937; /* Dark color on hover */
-        }
-
-        .sidebar .icon {
-            font-size: 24px;
+        .sidebar button i {
             margin-right: 10px;
+            font-size: 24px;
         }
 
-        .sidebar.narrow .label {
-            display: none;
+        .sidebar button.active {
+        background-color: #c693c3; /* Calm violet for active state */
+        color: #ffffff; /* White text */
+        border: 2px solid #a05d92; /* Darker violet border */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); /* Shadow for prominence */
+    }
+
+    .sidebar button.active i {
+        color: #ffffff; /* Ensure icon color matches text */
+    }
+
+        .sidebar button:hover {
+            color: black;
+            background-color: #856d95; /* Light violet on hover */
+        }
+
+        .sidebar button:hover i {
+            color: black; /* Light violet for icon on hover */
         }
 
         .content {
             flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
             padding: 20px;
             box-sizing: border-box;
-            width: calc(100% - 250px); /* Adjust width to account for sidebar */
-            margin-left: 250px; /* Ensure content is next to sidebar */
-            transition: width 0.3s, margin-left 0.3s;
-            text-align: center; /* Center-align text */
-            justify-content: center;
+            margin-left: 0;
+            transition: margin-left 0.3s ease;
         }
 
-        .sidebar.narrow ~ .content {
-            width: calc(100% - 80px);
-            margin-left: 80px;
+        .content.shrink {
+            margin-left: 250px; /* Sidebar width */
         }
 
         h1 {
             font-size: 36px;
-            color: #2600ff; /* Ensure h1 color is dark gray */
-        }
-
-        p {
-            font-size: 24px; /* Increase font size for the paragraph */
-            color: #2600ff; /* Ensure p color is dark gray */
-            margin: 10px 0; /* Add some margin for spacing */
+            color: #ffffff; /* White text */
+            margin-bottom: 20px;
+            text-align: center;
         }
 
         .box {
-            border: 2px solid #3B82F6;
-            border-radius: 10px;
+            border: 2px solid #333333; /* Border color */
+            border-radius: 16px;
             margin: 20px 0;
             padding: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            background-color: #000000; /* Dark background for boxes */
+            transition: all 0.3s ease;
+        }
+
+        .box:hover {
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
 
         .box h2 {
             margin: 0;
+            flex: 1;
+            color: #e0e0e0; /* Light text color */
         }
 
         .add-more-btn {
-            background-color: white;
-            border: 2px solid #3B82F6;
-            color: #3B82F6;
-            padding: 20px 40px; /* Increased size */
+            background-color: black; /* Dark background */
+            border: 2px solid #a05d92;
+            color: #a5408f; /* White text */
+            padding: 10px 20px;
             cursor: pointer;
-            border-radius: 5px;
-            font-size: 20px; /* Increased font size */
-            margin: 20px auto; /* Center align */
-            display: flex; /* Flexbox properties */
-            justify-content: center;
-            align-items: center;
-            transition: background-color 0.2s, color 0.2s;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
         }
 
         .add-more-btn:hover {
-            background-color: #3B82F6;
-            color: white;
+            border:none;
+            background-color: #a5408f; /* Blue accent color */
+            color:#000000;
         }
 
-        .toggle-button {
-            position: absolute;
+        .menu-button {
+            position: fixed;
             top: 20px;
-            left: 250px;
-            transform: translateX(-50%);
-            background-color: #3B82F6; /* Blue color */
-            color: white;
+            left: 20px;
+            background-color: #4b3758e1; /* Black background */
+            color: #ffffff; /* White text */
             border: none;
-            padding: 10px;
+            padding: 12px;
+            border-radius: 8px; /* Rounded corners */
+            cursor: pointer;
+            font-size: 24px;
+            z-index: 30;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+        }
+
+        .menu-button .hamburger {
+            width: 24px;
+            height: 24px;
+            position: relative;
+        }
+
+        .menu-button .hamburger div {
+            width: 24px;
+            height: 3px;
+            background-color: #ffffff; /* White color for the lines */
+            position: absolute;
+            left: 0;
+            transition: all 0.3s ease;
+        }
+
+        .menu-button .hamburger div:nth-child(1) {
+            top: 0;
+        }
+
+        .menu-button .hamburger div:nth-child(2) {
+            top: 10px;
+        }
+
+        .menu-button .hamburger div:nth-child(3) {
+            top: 20px;
+        }
+
+        .menu-button:hover {
+            background-color: #2d2c2c; /* Blue accent color */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+        }
+
+        .menu-button.hidden {
+            display: none;
+        }
+
+        .back-button {
+            background-color: #000000; /* Black background */
+            color: #ffffff; /* White text */
+            border: none;
+            padding: 12px;
             border-radius: 50%;
             cursor: pointer;
-            font-size: 16px;
-            z-index: 20; /* Ensure it is above the sidebar */
-            transition: background-color 0.2s, transform 0.2s; /* Smooth transition */
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            font-size: 24px;
+            margin-top: auto;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
         }
 
-        .toggle-button:hover {
-            background-color: #2563EB; /* Darker blue on hover */
-            transform: scale(1.1); /* Slightly larger on hover */
+        .back-button:hover {
+            background-color: #575dfb; /* Blue accent color */
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
         }
 
-        .sidebar.narrow + .toggle-button {
-            left: 80px;
-        }
-        .sidebar button.active {
-            background-color: rgb(82, 67, 247);
-            color: rgb(255, 255, 255);
-        }
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                left: -100%;
+            }
 
-        .dark-mode-toggle {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
+            .sidebar.show {
+                left: 0;
+            }
+
+            .content {
+                margin-left: 0;
+                padding: 10px;
+            }
+
+            .content.shrink {
+                margin-left: 0;
+            }
+
+            .box {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .add-more-btn {
+                margin-top: 10px;
+                width: 100%;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            .menu-button {
+                top: 10px;
+                left: 10px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="sidebar" id="sidebar">
-        <button onclick="window.location.href='acc.html'">
-            <span class="icon">👤</span>
-            <span class="label">Account</span>
-        </button>
-        <button onclick="window.location.href='shop.html'">
-            <span class="icon">🛒</span>
-            <span class="label">My Shop</span>
-        </button>
-        <button onclick="window.location.href='loot.html'">
-            <span class="icon">🎁</span>
-            <span class="label">Loot</span>
-        </button>
-        <button onclick="window.location.href='explore.html'">
-            <span class="icon">🔍</span>
-            <span class="label">Explore</span>
-        </button>
-        <button class ="active">
-            <span class="icon">🏆</span>
-            <span class="label">Rewards</span>
-        </button>
-        <button class="dark-mode-toggle" onclick="toggleDarkMode()">
-            <span class="icon">🌙</span>
-            <span class="label">Dark Mode</span>
-        </button>
+        <button onclick="window.location.href='dashboard.html'"><i class="material-icons">dashboard</i> Dashboard</button>
+        <button onclick="window.location.href='acc.html'"><i class="material-icons">account_circle</i> Account</button>
+        <button onclick="window.location.href='shop.html'"><i class="material-icons">shopping_bag</i> My Shop</button>
+        <button onclick="window.location.href='loot.html'"><i class="material-icons">loyalty</i> Loot</button>
+        <button onclick="window.location.href='explore.html'"><i class="material-icons">explore</i> Explore</button>
+        <button class="active" style="color:black; background-color: #c693c3;"><i class="material-icons">redeem</i> Rewards</button>
+        <button class="back-button" onclick="toggleSidebar()"><i class="material-icons">arrow_back</i></button>
     </div>
-    <button class="toggle-button" id="toggleButton" onclick="toggleSidebar()">⇔</button>
-    <div class="content">
-        <h1>This Page Under Designing..Wait for updates...</h1>
-        
+    <div class="content" id="content">
+        <button class="menu-button" id="menuButton" onclick="toggleSidebar()">
+            <!-- Refined Hamburger Icon -->
+            <div class="hamburger">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </button>
+        <h1>Your Rewards</h1>
+        <div class="box" style="justify-content: center; font-weight: normal;">
+            Empty
+        </div>
     </div>
     <script>
         function toggleSidebar() {
-            var sidebar = document.getElementById('sidebar');
-            var toggleButton = document.getElementById('toggleButton');
-            sidebar.classList.toggle('narrow');
-            toggleButton.classList.toggle('narrow');
+            const sidebar = document.getElementById('sidebar');
+            const content = document.getElementById('content');
+            const menuButton = document.getElementById('menuButton');
+
+            sidebar.classList.toggle('show');
+            content.classList.toggle('shrink');
+            menuButton.classList.toggle('hidden');
         }
 
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
+        // Function to highlight the active menu item
+        function highlightActiveMenuItem() {
+            const buttons = document.querySelectorAll('.sidebar button');
+            const currentPage = window.location.href.split('/').pop().replace('.html', '');
+
+            buttons.forEach(button => {
+                const buttonId = button.textContent.trim().toLowerCase();
+                if (currentPage === buttonId) {
+                    button.classList.add('active');
+                } else {
+                    button.classList.remove('active');
+                }
+            });
         }
+
+        highlightActiveMenuItem();
     </script>
 </body>
 </html>

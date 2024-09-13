@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Account-Apploot</title>
+    <title>Shop - Upload Offer</title>
     <link rel="icon" href="loot_logo.png" type="image/png">
-    <!-- Material Icons -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color: black; /* Dark background */
-            color: #e0e0e0; /* Light text color */
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
+            height: 100vh;
+            background-color: #121212; /* Dark background */
+            color: #e0e0e0; /* Light text color */
         }
 
         .sidebar {
@@ -26,7 +26,7 @@
             align-items: center;
             padding: 20px 0;
             position: fixed;
-            left: -250px; /* Hidden by default */
+            left: -250px;
             top: 0;
             height: 100%;
             transition: left 0.3s ease;
@@ -39,10 +39,10 @@
 
         .sidebar button {
             width: 80%;
-            background: none;
-            border: none;
-            color: #e0e0e0;
-            padding: 12px 20px;
+            background: none; /* Dark background for buttons */
+            border: none; /* Border color */
+            color: #e0e0e0; /* Light text color */
+            padding: 10px 20px;
             cursor: pointer;
             border-radius: 8px;
             font-size: 18px;
@@ -58,100 +58,150 @@
             font-size: 24px;
         }
 
-        .sidebar button.active {
-        background-color: #c693c3; /* Calm violet for active state */
-        color: #ffffff; /* White text */
-        border: 2px solid #a05d92; /* Darker violet border */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); /* Shadow for prominence */
-    }
+        .sidebar button.active i {
+            color: #ffffff; /* Ensure icon color matches text */
+        }
 
-    .sidebar button.active i {
-        color: #ffffff; /* Ensure icon color matches text */
-    }
+        .sidebar button.active {
+            background-color: #c693c3; /* Calm violet for active state */
+            color: #ffffff; /* White text */
+            border: 2px solid #a05d92; /* Darker violet border */
+        }
 
         .sidebar button:hover {
-            color: black;
             background-color: #856d95; /* Light violet on hover */
+            color: black;
         }
 
         .sidebar button:hover i {
             color: black; /* Light violet for icon on hover */
         }
 
+        .sidebar i {
+            margin-right: 8px;
+        }
+
         .content {
             flex: 1;
             padding: 20px;
             box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #e0e0e0; /* Light text color */
             margin-left: 0;
             transition: margin-left 0.3s ease;
         }
 
-        .content.shrink {
+        .content.shrink{
             margin-left: 250px; /* Sidebar width */
         }
 
         h1 {
             font-size: 36px;
-            color: #ffffff; /* White text */
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .box {
-            border: 2px solid #333333; /* Border color */
-            border-radius: 16px;
-            margin: 20px 0;
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            background-color: #000000; /* Dark background for boxes */
-            transition: all 0.3s ease;
-        }
-
-        .box:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .box h2 {
-            margin: 0;
-            flex: 1;
             color: #e0e0e0; /* Light text color */
         }
 
-        .add-more-btn {
-            background-color: black; /* Dark background */
-            border: 2px solid #a05d92;
-            color: #a5408f; /* White text */
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .button-container button {
+            background-color: #a05d92; /* Calm violet */
+            color: #ffffff; /* White text */
+            border: none;
             padding: 10px 20px;
             cursor: pointer;
             border-radius: 8px;
-            font-size: 16px;
-            transition: all 0.3s ease;
+            font-size: 20px;
+            margin: 10px 0;
+            transition: background-color 0.3s ease;
         }
 
-        .add-more-btn:hover {
-            border:none;
-            background-color: #a5408f; /* Blue accent color */
-            color:#000000;
+        .button-container button:hover {
+            background-color: #856d95; /* Light violet on hover */
+        }
+
+        .form-container {
+            border: 2px solid #a05d92; /* Border color */
+            border-radius: 10px;
+            padding: 20px;
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+            background-color: #1e1e1e; /* Dark background */
+            display: none;
+        }
+
+        .form-group {
+            margin: 10px 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 5px;
+            font-size: 16px;
+            color: #e0e0e0; /* Light text color */
+        }
+
+        .form-group input {
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #a05d92; /* Border color */
+            border-radius: 5px;
+            background-color: #333333; /* Dark input background */
+            color: #e0e0e0; /* Light text color */
+        }
+
+        .form-group input[type="file"] {
+            padding: 5px;
+        }
+
+        .submit-btn {
+            background-color: #a05d92; /* Calm violet */
+            border: 2px solid #a05d92; /* Border color */
+            color: #ffffff; /* White text */
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 20px;
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: #856d95; /* Light violet on hover */
         }
 
         .menu-button {
-            position: fixed;
+            position: absolute;
             top: 20px;
             left: 20px;
-            background-color: #4b3758e1; /* Black background */
+            background-color: #4b3758; /* Dark violet background */
             color: #ffffff; /* White text */
             border: none;
-            padding: 12px;
-            border-radius: 8px; /* Rounded corners */
+            padding: 10px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 24px;
+            font-size: 16px;
             z-index: 30;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .menu-button .hamburger {
@@ -215,10 +265,6 @@
                 left: -100%;
             }
 
-            .sidebar.show {
-                left: 0;
-            }
-
             .content {
                 margin-left: 0;
                 padding: 10px;
@@ -228,18 +274,21 @@
                 margin-left: 0;
             }
 
-            .box {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .add-more-btn {
-                margin-top: 10px;
-                width: 100%;
-            }
-
             h1 {
-                font-size: 28px;
+                font-size: 24px;
+            }
+
+            .form-container {
+                padding: 10px;
+            }
+
+            .form-group input {
+                padding: 8px;
+            }
+
+            .submit-btn {
+                font-size: 16px;
+                padding: 10px 20px;
             }
 
             .menu-button {
@@ -247,17 +296,33 @@
                 left: 10px;
             }
         }
+
+        @media (max-width: 480px) {
+            .form-group input {
+                font-size: 14px;
+            }
+
+            .submit-btn {
+                font-size: 14px;
+                padding: 8px 16px;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+        }
     </style>
 </head>
+
 <body>
     <div class="sidebar" id="sidebar">
         <button onclick="window.location.href='dashboard.html'"><i class="material-icons">dashboard</i> Dashboard</button>
-        <button class="active" style="color:black; background-color: #c693c3;"><i class="material-icons">account_circle</i> Account</button>
+        <button style="color:black; background-color: #c693c3;"><i class="material-icons">account_circle</i>Account</button>
         <button onclick="window.location.href='shop.html'"><i class="material-icons">shopping_bag</i> My Shop</button>
-        <button onclick="window.location.href='loot.html'"><i class="material-icons">loyalty</i> Loot</button>
-        <button onclick="window.location.href='explore.html'"><i class="material-icons">explore</i> Explore</button>
+        <button onclick="window.location.href='loot.html'"><i class="material-icons">loyalty</i>Loot</button>
+        <button onclick="window.location.href='explore.html'"><i class="material-icons">explore</i>Explore</button>
         <button onclick="window.location.href='rewards.html'"><i class="material-icons">redeem</i> Rewards</button>
-        <button class="back-button" onclick="toggleSidebar()">←</button>
+        <button class="back-button" onclick="toggleSidebar()"><i class="material-icons">arrow_back</i></button>
     </div>
     <div class="content" id="content">
         <button class="menu-button" id="menuButton" onclick="toggleSidebar()">
@@ -267,48 +332,57 @@
                 <div></div>
                 <div></div>
             </div>
-        </button>
-        <h1>My Box...</h1>
-        <div class="box">
-            <h2>Apps</h2>
-            <button onclick="window.location.href='loot.html'" class="add-more-btn">Add More</button>
+        </button>        <h1>What do you want to add?</h1>
+        <div class="button-container">
+            <button onclick="showForm()">Add Offer+</button>
+            <button onclick="window.location.href='shop2.html'">Add Product+</button>
         </div>
-        <div class="box">
-            <h2>Web</h2>
-            <button onclick="window.location.href='loot.html'" class="add-more-btn">Add More</button>
-        </div>
-        <div class="box">
-            <h2>Items</h2>
-            <!-- Add content here -->
+        <div class="form-container" id="formContainer">
+            <div class="form-group">
+                <label for="productName">Product Name:</label>
+                <input type="text" id="productName" placeholder="Enter product name">
+            </div>
+            <div class="form-group">
+                <label for="productImage">Product Image:</label>
+                <input type="file" id="productImage">
+            </div>
+            <div class="form-group">
+                <label for="productDescription">Product Description:</label>
+                <input type="text" id="productDescription" placeholder="Enter product description">
+            </div>
+            <button class="submit-btn" onclick="uploadProduct()">Upload Product</button>
         </div>
     </div>
+
     <script>
         function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const content = document.getElementById('content');
-            const menuButton = document.getElementById('menuButton');
-
-            sidebar.classList.toggle('show');
-            content.classList.toggle('shrink');
-            menuButton.classList.toggle('hidden');
+            var sidebar = document.getElementById('sidebar');
+            var content = document.getElementById('content');
+            var menuButton = document.getElementById('menuButton');
+            if (sidebar.classList.contains('show')) {
+                sidebar.classList.remove('show');
+                content.classList.remove('shifted');
+                menuButton.classList.remove('hidden');
+            } else {
+                sidebar.classList.add('show');
+                content.classList.add('shifted');
+                menuButton.classList.add('hidden');
+            }
         }
 
-        // Function to highlight the active menu item
-        function highlightActiveMenuItem() {
-            const buttons = document.querySelectorAll('.sidebar button');
-            const currentPage = window.location.href.split('/').pop().replace('.html', '');
-
-            buttons.forEach(button => {
-                const buttonId = button.textContent.trim().toLowerCase();
-                if (currentPage === buttonId) {
-                    button.classList.add('active');
-                } else {
-                    button.classList.remove('active');
-                }
-            });
+        function showForm() {
+            var formContainer = document.getElementById('formContainer');
+            if (formContainer.style.display === 'none' || formContainer.style.display === '') {
+                formContainer.style.display = 'flex';
+            } else {
+                formContainer.style.display = 'none';
+            }
         }
 
-        highlightActiveMenuItem();
+        function uploadProduct() {
+            alert('Product uploaded!');
+        }
     </script>
 </body>
+
 </html>

@@ -117,14 +117,23 @@
             box-sizing: border-box;
         }
 
-        .search-input {
+        .search-input{
             width: 100%; /* Adjusted for smaller screens */
             max-width: 300px; /* Limit width on larger screens */
             padding: 10px;
-            border: 2px solid #0000ff;
+            border: black;
+            outline: none;
+            background-color: #b597af;
+            color: black;
             border-radius: 5px;
             font-size: 16px;
             box-sizing: border-box;
+        }
+        .search-input::placeholder{
+            color: black;
+        }
+        .search-input:focus{
+            border:2px solid #542a71 ;
         }
 
         .search-icon, .profile-icon {
@@ -132,7 +141,7 @@
             height: 40px;
             background-color: rgb(0, 0, 0);
             border: 2px solid rgb(0, 0, 0);
-            color: #a05d92;
+            color: #884a7b;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -490,7 +499,7 @@ function fetchOfferCards() {
         <button style="color:black; background-color: #c693c3;"><i class="material-icons">loyalty</i> Loot</button>
         <button onclick="window.location.href='explore.html'"><i class="material-icons">explore</i> Explore</button>
         <button onclick="window.location.href='rewards.html'"><i class="material-icons">redeem</i> Rewards</button>
-        <button class="back-button" onclick="toggleSidebar()">←</button>
+        <button class="back-button" onclick="toggleSidebar()"><i class="material-icons">arrow_back</i></button>
     </div>
     <div class="main-content" id="content">
         <button class="menu-button" id="menuButton" onclick="toggleSidebar()">
