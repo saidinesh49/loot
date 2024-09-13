@@ -134,13 +134,23 @@
             color: white;
         }
 
+        #reels-container {
+        scroll-snap-type: y mandatory;
+        height: 100vh; /* Ensures it takes up full viewport height */
+        overflow-y: auto; /* Enable scrolling */
+        scrollbar-width: none;  /* Firefox */
+    }
+
         .video-container {
             width: 100%;
             max-width: 500px;
             margin: 20px 0;
             position: relative;
             cursor: pointer;
+            scroll-snap-align: center; /* Adjust this to start or end if needed */
+            scrollbar-width: none;  /* Firefox */
         }
+
 
         video {
             width: 100%;
@@ -240,24 +250,32 @@
         let currentPlayingVideo = null;
 
         document.addEventListener('DOMContentLoaded', () => {
-            const container = document.getElementById('reels-container');
-            container.addEventListener('click', (e) => {
-                if (e.target.tagName === 'VIDEO') {
-                    const clickedVideo = e.target;
+        const container = document.getElementById('reels-container');
 
-                    if (currentPlayingVideo && currentPlayingVideo !== clickedVideo) {
-                        currentPlayingVideo.pause();
-                    }
+        container.addEventListener('click', (e) => {
+            if (e.target.tagName === 'VIDEO') {
+                const clickedVideo = e.target;
 
-                    if (clickedVideo.paused) {
-                        clickedVideo.play();
-                        currentPlayingVideo = clickedVideo;
-                    } else {
-                        clickedVideo.pause();
-                    }
+                // Scroll to the clicked video's position
+                container.scrollTo({
+                    top: clickedVideo.offsetTop,
+                    behavior: 'smooth'  // Optional: Smooth scrolling
+                });
+
+                // Play or pause the video
+                if (currentPlayingVideo && currentPlayingVideo !== clickedVideo) {
+                    currentPlayingVideo.pause();
                 }
-            });
+                if (clickedVideo.paused) {
+                    clickedVideo.play();
+                    currentPlayingVideo = clickedVideo;
+                } else {
+                    clickedVideo.pause();
+                }
+            }
         });
+    });
+
     </script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
